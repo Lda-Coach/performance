@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Informativa privacy — LDA Coach Performance</title>
+<meta name="description" content="Come tratto i dati raccolti con il questionario e con il check-in mensile, e come chiedere la loro cancellazione.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0D0D0D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --nero:#0D0D0D; --nero-2:#1A1A1A; --nero-3:#151515;
+    --accento:#FF3800; --grigio:#D6D6D6; --grigio-2:#8A8A8A;
+    --bianco:#FFFFFF; --bordo:#2A2A2A; --errore:#FFB020;
+    --max:38rem;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--nero); color:var(--grigio);
+    font-family:'Montserrat',system-ui,sans-serif;
+    font-size:16px; line-height:1.65; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .shell{max-width:var(--max);margin:0 auto;padding:1.75rem 1.25rem 4rem}
+
+  h1,h2,.bebas{
+    font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;
+    letter-spacing:.02em;color:var(--bianco);line-height:1.05;
+  }
+
+  .marchio{display:flex;align-items:baseline;gap:.45rem;margin-bottom:2.25rem}
+  .marchio .lda{font-family:'Bebas Neue',Impact,sans-serif;font-size:2.6rem;line-height:1;color:var(--bianco)}
+  .marchio .lda i{font-style:normal;color:var(--accento)}
+  .marchio .cp{font-size:.62rem;letter-spacing:.22em;font-weight:600;color:var(--grigio-2);text-transform:uppercase;padding-bottom:.3rem}
+
+  .occhiello{
+    display:inline-block;font-size:.7rem;letter-spacing:.18em;font-weight:700;
+    color:var(--accento);text-transform:uppercase;margin-bottom:1rem;
+  }
+  h1{font-size:clamp(2.4rem,10vw,3.2rem);margin-bottom:1rem}
+  .sottotitolo{color:var(--grigio-2);font-size:.95rem;margin-bottom:.4rem}
+  .versione{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--grigio-2);font-weight:600;margin-bottom:2.6rem}
+
+  h2{font-size:1.5rem;margin:2.8rem 0 .9rem;padding-top:1.4rem;border-top:1px solid var(--bordo)}
+  h2 .num{color:var(--accento);margin-right:.5rem}
+  p{margin-bottom:1rem}
+  ul{margin:0 0 1rem 1.1rem}
+  li{margin-bottom:.45rem}
+  strong,b{color:var(--bianco);font-weight:600}
+  a{color:var(--accento);text-decoration:underline;text-underline-offset:2px}
+
+  .dacompletare{
+    background:#2A1E00;color:var(--errore);
+    padding:.05em .4em;border:1px dashed #5A4410;
+    font-weight:600;font-size:.92em;
+  }
+
+  .riquadro{
+    background:var(--nero-3);border:1px solid var(--bordo);
+    border-left:3px solid var(--accento);
+    padding:1.2rem 1.1rem;margin:1.6rem 0;
+  }
+  .riquadro p:last-child{margin-bottom:0}
+  .riquadro h3{
+    font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;
+    font-size:1.25rem;color:var(--bianco);letter-spacing:.03em;margin-bottom:.6rem;
+  }
+
+  .btn{
+    display:inline-block;font-family:'Bebas Neue',Impact,sans-serif;
+    font-size:1.25rem;letter-spacing:.06em;text-decoration:none;
+    background:var(--accento);color:#0d0d0d;border:none;
+    padding:.75rem 1.8rem;cursor:pointer;margin-top:.6rem;
+    clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);
+  }
+  .btn:hover{filter:brightness(1.12)}
+  :focus-visible{outline:2px solid var(--accento);outline-offset:3px}
+
+
+  .anteprima{
+    background:#2A1E00;border:1px dashed #5A4410;color:#FFB020;
+    font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+    text-align:center;padding:.65rem .8rem;margin-bottom:1.6rem;line-height:1.5;
+  }
+
+  .tornare{margin-top:3rem;padding-top:1.4rem;border-top:1px solid var(--bordo);font-size:.82rem}
+  .tornare a{color:var(--grigio-2)}
+  .tornare a:hover{color:var(--accento)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="anteprima">Anteprima — i riquadri arancioni sono da completare</div>
+
+  <div class="marchio">
+    <span class="lda">LD<i>A</i></span>
+    <span class="cp">Performance Coach</span>
+  </div>
+
+  <span class="occhiello">Informativa privacy</span>
+  <h1>Che fine fanno<br>i tuoi dati</h1>
+  <p class="sottotitolo">Questa pagina spiega quali dati raccolgo con il questionario iniziale e con il check-in mensile, perché li uso e come puoi farli cancellare.</p>
+  <p class="versione">Versione 1.0 — 16 settembre 2026</p>
+
+  <h2><span class="num">01</span>Chi tratta i tuoi dati</h2>
+  <p>
+    Il titolare del trattamento è
+    <span class="dacompletare">[NOME E COGNOME / RAGIONE SOCIALE]</span>,
+    con sede in <span class="dacompletare">[INDIRIZZO COMPLETO]</span>,
+    P. IVA / C.F. <span class="dacompletare">[PARTITA IVA O CODICE FISCALE]</span>.
+  </p>
+  <p>
+    Per qualsiasi questione sui tuoi dati puoi scrivere a
+    <a class="dacompletare" href="mailto:INDIRIZZO@DA-COMPLETARE.IT">[EMAIL DI CONTATTO]</a>.
+    Non è stato nominato un responsabile della protezione dei dati (DPO), non essendo obbligatorio in questo caso.
+  </p>
+
+  <h2><span class="num">02</span>Quali dati raccolgo</h2>
+  <p><strong>Con il questionario iniziale</strong>, se non sei ancora mio cliente:</p>
+  <ul>
+    <li>nome e cognome;</li>
+    <li>il recapito che scegli tu: numero WhatsApp, profilo Instagram oppure email;</li>
+    <li>le risposte sul tuo obiettivo, sulla tua situazione di allenamento, sul tipo di percorso che cerchi e su quando vorresti iniziare;</li>
+    <li>quello che scrivi nel campo libero delle note;</li>
+    <li>da quale link sei arrivato (per esempio Instagram), se il link lo indica.</li>
+  </ul>
+  <p><strong>Con il check-in mensile</strong>, se sei già seguito:</p>
+  <ul>
+    <li>nome e cognome e il mese di riferimento;</li>
+    <li>allenamenti completati e aderenza alle indicazioni alimentari;</li>
+    <li>peso e girovita, se scegli di indicarli (sono facoltativi);</li>
+    <li>come valuti forma fisica, forza, energia, recupero e sonno;</li>
+    <li>eventuali dolori, fastidi o infortuni, con la descrizione che scrivi tu;</li>
+    <li>cosa ha funzionato, cosa ti ha ostacolato, l'obiettivo del mese successivo e se vuoi essere richiamato.</li>
+  </ul>
+  <p>
+    Insieme alle risposte vengono registrati la data e l'ora dell'invio e la conferma
+    del consenso che hai dato, con il numero di versione di questa informativa.
+    Non raccolgo il tuo indirizzo IP e non uso strumenti di tracciamento o profilazione.
+  </p>
+
+  <h2><span class="num">03</span>Perché li raccolgo</h2>
+  <ul>
+    <li>
+      <strong>Questionario iniziale:</strong> per capire la tua situazione, ricontattarti sul canale
+      che hai scelto e proporti il percorso più adatto. La base giuridica è il tuo <strong>consenso</strong>
+      (art. 6.1.a GDPR), che dai spuntando la casella prima di inviare.
+    </li>
+    <li>
+      <strong>Check-in mensile:</strong> per seguire i tuoi progressi e adattare il programma di
+      allenamento. La base giuridica è l'<strong>esecuzione del servizio</strong> che hai
+      sottoscritto (art. 6.1.b GDPR), unita al tuo consenso per la parte relativa alla salute.
+    </li>
+  </ul>
+  <p>
+    Non uso i tuoi dati per altro: nessuna newsletter automatica, nessuna pubblicità,
+    nessuna profilazione, nessuna vendita o cessione a terzi.
+  </p>
+
+  <h2><span class="num">04</span>I dati sulla salute</h2>
+  <p>
+    Alcune risposte possono riguardare il tuo stato di salute: infortuni, dolori, peso, misure.
+    Sono dati che il GDPR chiama <strong>categorie particolari</strong> (art. 9) e che meritano
+    più attenzione degli altri.
+  </p>
+  <p>
+    Li tratto solo sulla base del tuo <strong>consenso esplicito</strong> (art. 9.2.a GDPR),
+    quello che dai spuntando la casella prima dell'invio, e solo per impostare un allenamento
+    che non ti faccia male. Se preferisci non scriverli, i campi liberi e le misure sono
+    facoltativi: puoi lasciarli vuoti e raccontarmi il resto a voce.
+  </p>
+  <p>
+    <strong>Non sono un medico e non faccio diagnosi.</strong> Se hai una patologia o un infortunio
+    in corso, il parere del tuo medico o fisioterapista viene prima del mio programma.
+  </p>
+
+  <h2><span class="num">05</span>Dove finiscono e chi li vede</h2>
+  <p>
+    Le risposte che invii dal questionario vengono scritte in un foglio di calcolo
+    <strong>Google Sheets</strong> a cui accedo soltanto io, e mi arriva una notifica via email.
+    Il passaggio è gestito da uno script Google (Apps Script) collegato a quel foglio.
+  </p>
+  <p>
+    Questo significa che il fornitore <strong>Google Ireland Limited</strong> tratta i dati
+    per mio conto, come responsabile del trattamento, sui propri server. Google può trasferire
+    dati fuori dall'Unione Europea: in quel caso il trasferimento è coperto dalle clausole
+    contrattuali standard approvate dalla Commissione Europea e dal quadro
+    EU-US Data Privacy Framework.
+  </p>
+  <p>
+    Nessun altro ha accesso alle tue risposte. Non le pubblico, non le diffondo e non le
+    comunico a terzi, salvo un obbligo di legge.
+  </p>
+
+  <h2><span class="num">06</span>Per quanto tempo li conservo</h2>
+  <ul>
+    <li>
+      <strong>Se non diventi cliente:</strong> conservo le risposte del questionario per
+      <strong>12 mesi</strong> dall'invio, poi le cancello. Se mi dici prima che non sei
+      interessato, le cancello subito.
+    </li>
+    <li>
+      <strong>Se diventi o sei cliente:</strong> conservo questionario e check-in per tutta
+      la durata del percorso e per i <strong>24 mesi</strong> successivi, perché lo storico
+      serve a riprendere il lavoro se torni. Poi li cancello.
+    </li>
+    <li>
+      <strong>In ogni caso:</strong> se chiedi la cancellazione, cancello prima di queste scadenze.
+    </li>
+  </ul>
+  <p>
+    Restano fuori da questi tempi solo i documenti che la legge mi obbliga a conservare,
+    come le fatture: quelli seguono i termini fiscali di legge e non riguardano le risposte
+    del questionario.
+  </p>
+
+  <h2><span class="num">07</span>Cookie e strumenti esterni</h2>
+  <p>
+    Questo sito <strong>non usa cookie</strong> di profilazione, non ha statistiche di
+    navigazione e non ti segue da una pagina all'altra.
+  </p>
+  <p>
+    I caratteri tipografici della pagina vengono caricati da <strong>Google Fonts</strong>:
+    per farlo il tuo browser contatta i server di Google, che in quel momento vedono il tuo
+    indirizzo IP. È l'unico collegamento verso l'esterno presente in queste pagine.
+  </p>
+
+  <h2><span class="num">08</span>I tuoi diritti</h2>
+  <p>In qualsiasi momento puoi chiedermi di:</p>
+  <ul>
+    <li><strong>sapere</strong> quali dati ho su di te e averne una copia (artt. 15 e 20 GDPR);</li>
+    <li><strong>correggere</strong> un dato sbagliato o aggiornarlo (art. 16);</li>
+    <li><strong>cancellare</strong> tutto quello che ti riguarda (art. 17);</li>
+    <li><strong>limitare</strong> o <strong>opporti</strong> al trattamento (artt. 18 e 21);</li>
+    <li><strong>revocare il consenso</strong> che hai dato, in qualsiasi momento e senza doverti giustificare (art. 7.3). La revoca vale da quel momento in avanti e non rende illegittimo quello che è stato fatto prima.</li>
+  </ul>
+  <p>Rispondo entro <strong>30 giorni</strong>, gratuitamente.</p>
+
+  <div class="riquadro">
+    <h3>Come chiedere la cancellazione dei tuoi dati</h3>
+    <p>
+      Scrivimi una mail dall'indirizzo che preferisci, indicando il <strong>nome e cognome</strong>
+      che hai usato nel questionario e, se lo ricordi, <strong>quando</strong> lo hai compilato.
+      Non serve motivare la richiesta.
+    </p>
+    <p>
+      <a class="btn dacompletare" href="mailto:INDIRIZZO@DA-COMPLETARE.IT?subject=Richiesta%20di%20cancellazione%20dei%20miei%20dati&body=Ciao%2C%0D%0Achiedo%20la%20cancellazione%20dei%20dati%20che%20ho%20inviato%20tramite%20il%20questionario.%0D%0A%0D%0ANome%20e%20cognome%3A%20%0D%0AData%20indicativa%20di%20compilazione%3A%20%0D%0ARecapito%20che%20avevo%20lasciato%3A%20%0D%0A%0D%0AGrazie.">Scrivi per cancellare i dati</a>
+    </p>
+    <p>
+      Va bene anche un messaggio su WhatsApp o Instagram, se è da lì che ci siamo sentiti.
+      Cancello le tue righe dal foglio e le email che le contengono, e ti confermo quando è fatto.
+    </p>
+  </div>
+
+  <h2><span class="num">09</span>Se qualcosa non va</h2>
+  <p>
+    Se pensi che stia trattando i tuoi dati in modo scorretto, scrivimi prima: nella maggior
+    parte dei casi si risolve in due messaggi.
+  </p>
+  <p>
+    Hai comunque il diritto di rivolgerti all'autorità di controllo, il
+    <strong>Garante per la protezione dei dati personali</strong>
+    (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">garanteprivacy.it</a>),
+    con un reclamo ai sensi dell'art. 77 GDPR.
+  </p>
+
+  <h2><span class="num">10</span>Se questa informativa cambia</h2>
+  <p>
+    Se modifico il modo in cui tratto i dati, aggiorno questa pagina e alzo il numero di versione
+    che trovi in alto. Nel foglio resta registrato quale versione dell'informativa ha accettato
+    ogni persona, così è sempre chiaro a cosa hai detto di sì.
+  </p>
+  <p>
+    Conferire i dati è libero: se scegli di non compilare il questionario non succede nulla,
+    semplicemente non potrò ricontattarti né seguire il tuo percorso.
+  </p>
+
+  <p class="tornare"><a href="index.html">← Torna al questionario</a></p>
+
+</div>
+</body>
+</html>

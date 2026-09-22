@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Questionario — LDA Coach Performance</title>
+<meta name="description" content="Nuovo cliente o percorso gia avviato: rispondi alle domande, valuto le risposte personalmente e ti ricontatto.">
+<meta name="theme-color" content="#0D0D0D">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Questionario — LDA Coach Performance">
+<meta property="og:description" content="Due minuti. Poi ti dico da dove partire.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     LDA Coach Performance — questionari
+     Due percorsi: nuovo contatto e check-in mensile dei clienti.
+     Collegata al foglio Google tramite Apps Script.
+     ============================================================ */
+
+  :root{
+    --nero:#0D0D0D;
+    --nero-2:#1A1A1A;
+    --nero-3:#151515;
+    --accento:#FF3800;
+    --grigio:#D6D6D6;
+    --grigio-2:#8A8A8A;
+    --bianco:#FFFFFF;
+    --bordo:#2A2A2A;
+    --errore:#FFB020;
+    --max:34rem;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--nero);
+    color:var(--grigio);
+    font-family:'Montserrat',system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .shell{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:1.75rem 1.25rem 4rem;
+    position:relative;
+  }
+  /* filigrana diagonale, ripresa dalla firma grafica */
+  .shell::before{
+    content:"";
+    position:fixed;
+    right:-14vw; top:-6vh;
+    width:70vw; height:70vw;
+    max-width:520px; max-height:520px;
+    background:linear-gradient(115deg,transparent 46%,#151515 46%,#151515 54%,transparent 54%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .shell > *{position:relative;z-index:1}
+
+  h1,h2,h3,.bebas{
+    font-family:'Bebas Neue',Impact,sans-serif;
+    font-weight:400;
+    letter-spacing:.02em;
+    color:var(--bianco);
+    line-height:1.02;
+  }
+
+  /* ---------- marchio ---------- */
+  .marchio{display:flex;align-items:baseline;gap:.45rem;margin-bottom:2.25rem}
+  .marchio .lda{
+    font-family:'Bebas Neue',Impact,sans-serif;
+    font-size:2.6rem;line-height:1;color:var(--bianco);
+    letter-spacing:.01em;
+  }
+  .marchio .lda i{font-style:normal;color:var(--accento)}
+  .marchio .cp{
+    font-size:.62rem;letter-spacing:.22em;font-weight:600;
+    color:var(--grigio-2);text-transform:uppercase;padding-bottom:.3rem;
+  }
+
+  /* ---------- ingresso ---------- */
+  #porta h1{font-size:clamp(2.6rem,11vw,3.6rem);margin-bottom:1rem}
+  #porta h1 em{font-style:normal;color:var(--accento);display:block}
+  .occhiello{
+    display:inline-block;font-size:.7rem;letter-spacing:.18em;font-weight:700;
+    color:var(--accento);text-transform:uppercase;margin-bottom:1.1rem;
+  }
+  #porta > p{max-width:32ch;margin-bottom:2rem;color:var(--grigio)}
+
+  .porte{display:flex;flex-direction:column;gap:.9rem}
+  .porta-btn{
+    display:block;width:100%;text-align:left;cursor:pointer;
+    background:var(--nero-3);border:1px solid var(--bordo);
+    border-left:3px solid var(--bordo);
+    padding:1.15rem 1.1rem;
+    font-family:inherit;color:var(--grigio);
+    transition:border-color .15s ease,background .15s ease;
+  }
+  .porta-btn:hover,.porta-btn:focus-visible{border-color:#3A3A3A;border-left-color:var(--accento);background:#181818}
+  .porta-tit{
+    display:block;font-family:'Bebas Neue',Impact,sans-serif;
+    font-size:1.6rem;color:var(--bianco);letter-spacing:.03em;line-height:1.1;
+    margin-bottom:.3rem;
+  }
+  .porta-txt{display:block;font-size:.88rem;color:var(--grigio-2);line-height:1.5}
+
+  /* ---------- bottoni ---------- */
+  .btn{
+    font-family:'Bebas Neue',Impact,sans-serif;
+    font-size:1.35rem;letter-spacing:.06em;
+    background:var(--accento);color:#0d0d0d;border:none;
+    padding:.85rem 2.1rem;cursor:pointer;
+    clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);
+    transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.12)}
+  .btn:disabled{opacity:.55;cursor:progress}
+  .btn-ghost{
+    background:none;color:var(--grigio-2);border:1px solid var(--bordo);
+    clip-path:none;padding:.85rem 1.4rem;
+  }
+  .btn-ghost:hover{color:var(--bianco);border-color:var(--grigio-2);filter:none}
+  :focus-visible{outline:2px solid var(--accento);outline-offset:3px}
+
+  /* ---------- avanzamento ---------- */
+  .avanzamento{display:flex;gap:.4rem;margin-bottom:.9rem}
+  .avanzamento span{
+    flex:1;height:6px;background:var(--nero-2);
+    transform:skewX(-24deg);
+    transition:background .25s ease;
+  }
+  .avanzamento span.on{background:var(--accento)}
+  .titolo-passo{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.6rem;gap:1rem}
+  .titolo-passo h2{font-size:1.9rem}
+  .titolo-passo .conta{font-size:.72rem;letter-spacing:.14em;color:var(--grigio-2);font-weight:600;white-space:nowrap}
+
+  /* ---------- domande ---------- */
+  .domanda{margin-bottom:2.1rem}
+  .domanda > legend, .domanda > .etichetta{
+    display:block;font-weight:600;color:var(--bianco);
+    font-size:1rem;margin-bottom:.15rem;
+  }
+  .aiuto{font-size:.8rem;color:var(--grigio-2);margin-bottom:.7rem}
+  fieldset{border:none}
+
+  .scelte{display:flex;flex-direction:column;gap:.45rem;margin-top:.7rem}
+  .scelta{
+    display:flex;align-items:center;gap:.75rem;
+    background:var(--nero-3);border:1px solid var(--bordo);
+    padding:.8rem .9rem;cursor:pointer;
+    font-size:.94rem;color:var(--grigio);
+    transition:border-color .15s ease,background .15s ease;
+  }
+  .scelta:hover{border-color:#3A3A3A}
+  .scelta input{position:absolute;opacity:0;width:0;height:0}
+  .segno{
+    width:14px;height:14px;flex:0 0 14px;
+    background:var(--bordo);transform:skewX(-24deg);
+    transition:background .15s ease;
+  }
+  .scelta:has(input:checked){border-color:var(--accento);background:#1F0B06;color:var(--bianco)}
+  .scelta:has(input:checked) .segno{background:var(--accento)}
+  .scelta:has(input:focus-visible){outline:2px solid var(--accento);outline-offset:2px}
+
+  input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{
+    width:100%;background:var(--nero-3);border:1px solid var(--bordo);
+    color:var(--bianco);font-family:inherit;font-size:1rem;
+    padding:.8rem .9rem;margin-top:.7rem;
+  }
+  select{
+    appearance:none;-webkit-appearance:none;cursor:pointer;
+    background-image:linear-gradient(45deg,transparent 50%,var(--grigio-2) 50%),linear-gradient(135deg,var(--grigio-2) 50%,transparent 50%);
+    background-position:calc(100% - 18px) 55%,calc(100% - 12px) 55%;
+    background-size:6px 6px,6px 6px;background-repeat:no-repeat;
+  }
+  textarea{resize:vertical;min-height:5.5rem}
+  input::placeholder,textarea::placeholder{color:#666}
+  input:focus,select:focus,textarea:focus{border-color:var(--accento);outline:none}
+  .facoltativa{font-weight:400;color:var(--grigio-2);font-size:.8rem}
+  .misura{display:flex;align-items:center;gap:.6rem}
+  .misura input{flex:1}
+  .misura .unita{margin-top:.7rem;color:var(--grigio-2);font-size:.9rem;font-weight:600}
+
+  .errore{color:var(--errore);font-size:.82rem;margin-top:.55rem;display:none}
+  .domanda.ko .errore{display:block}
+  .domanda.ko .scelta{border-color:#4A3A1C}
+  .domanda.ko input[type=text],.domanda.ko input[type=email],.domanda.ko input[type=tel],.domanda.ko input[type=number]{border-color:#4A3A1C}
+
+  .altro-wrap{display:none}
+  .altro-wrap.on{display:block}
+
+  /* ---------- consenso privacy ---------- */
+  .consenso{border-top:1px solid var(--bordo);padding-top:1.6rem;margin-top:2.6rem}
+  .consenso .scelta{align-items:flex-start;font-size:.86rem;line-height:1.5;padding:.9rem}
+  .consenso .segno{margin-top:.2rem}
+  .consenso a{color:var(--accento);text-decoration:underline;text-underline-offset:2px}
+  .nota-privacy{font-size:.76rem;color:var(--grigio-2);margin-top:.9rem;line-height:1.55}
+  .nota-privacy a{color:var(--grigio-2)}
+
+  .navigazione{display:flex;gap:.7rem;align-items:center;margin-top:2.4rem}
+  .navigazione .btn{flex:1}
+  .nascosto{display:none !important}
+  .honey{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+  /* ---------- fine ---------- */
+  #fine h2{font-size:clamp(2.2rem,9vw,3rem);margin-bottom:1.1rem}
+  #fine .riga{width:56px;height:5px;background:var(--accento);transform:skewX(-24deg);margin-bottom:1.6rem}
+  #fine p{margin-bottom:1rem;max-width:34ch}
+  .firma{margin-top:2.6rem;font-size:.72rem;letter-spacing:.16em;color:var(--grigio-2);text-transform:uppercase;font-weight:600}
+  .firma b{color:var(--accento);font-weight:600}
+
+  .avviso-invio{color:var(--errore);font-size:.88rem;margin-top:1rem;display:none}
+  .avviso-invio.on{display:block}
+
+  /* ---------- invio in corso ---------- */
+  #invio{padding:3.5rem 0 2rem}
+  #invio h2{font-size:clamp(1.9rem,7vw,2.4rem);margin-bottom:.6rem}
+  #invio p{color:var(--grigio-2);font-size:.92rem}
+  .barre{display:flex;gap:.4rem;margin-bottom:1.8rem}
+  .barre span{
+    flex:1;height:8px;background:var(--nero-2);
+    transform:skewX(-24deg);position:relative;overflow:hidden;
+  }
+  .barre span::after{
+    content:"";position:absolute;inset:0;background:var(--accento);
+    transform:translateX(-101%);
+    animation:scorri 1.05s linear infinite;
+  }
+  .barre span:nth-child(2)::after{animation-delay:.18s}
+  .barre span:nth-child(3)::after{animation-delay:.36s}
+  @keyframes scorri{
+    0%{transform:translateX(-101%)}
+    55%{transform:translateX(0)}
+    100%{transform:translateX(101%)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .barre span::after{animation:none;transform:translateX(0);opacity:.45}
+  }
+
+  /* ---------- invio non riuscito ---------- */
+  #ko{padding:2.5rem 0}
+  #ko h2{font-size:1.9rem;margin-bottom:.8rem}
+  #ko p{margin-bottom:1.4rem;max-width:34ch}
+
+  /* ---------- piede ---------- */
+  .pie{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--bordo);font-size:.74rem;color:var(--grigio-2)}
+  .pie a{color:var(--grigio-2);text-decoration:underline;text-underline-offset:2px}
+  .pie a:hover{color:var(--accento)}
+
+
+  .anteprima{
+    background:#2A1E00;border:1px dashed #5A4410;color:#FFB020;
+    font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+    text-align:center;padding:.65rem .8rem;margin-bottom:1.6rem;line-height:1.5;
+  }
+
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+  @media (min-width:40rem){ .shell{padding-top:3rem} }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="anteprima">Anteprima per revisione — nessuna risposta viene salvata</div>
+
+  <div class="marchio">
+    <span class="lda">LD<i>A</i></span>
+    <span class="cp">Performance Coach</span>
+  </div>
+
+  <!-- ===================== INGRESSO ===================== -->
+  <section id="porta">
+    <span class="occhiello">Questionario</span>
+    <h1>Ogni percorso è diverso<em>Il tuo parte da qui</em></h1>
+    <p>Dimmi da dove arrivi, così ti faccio le domande giuste.</p>
+
+    <div class="porte">
+      <button type="button" class="porta-btn" data-va="nuovo">
+        <span class="porta-tit">Non ci conosciamo ancora</span>
+        <span class="porta-txt">10 domande, 2 minuti. Leggo le tue risposte personalmente e ti ricontatto sul canale che preferisci.</span>
+      </button>
+      <button type="button" class="porta-btn" data-va="mensile">
+        <span class="porta-tit">Sono già seguito da LDA</span>
+        <span class="porta-txt">Check-in del mese: mi racconti com'è andata e aggiustiamo il programma sui tuoi numeri.</span>
+      </button>
+    </div>
+
+    <p class="pie">
+      I dati che scrivi servono solo a ricontattarti e a seguire il tuo percorso.
+      <a href="privacy.html" target="_blank" rel="noopener">Informativa privacy</a>
+    </p>
+  </section>
+
+  <!-- ===================== NUOVO CONTATTO ===================== -->
+  <form id="form-nuovo" class="nascosto" novalidate autocomplete="on">
+
+    <div class="avanzamento" aria-hidden="true"></div>
+
+    <div class="titolo-passo">
+      <h2>Il tuo obiettivo</h2>
+      <span class="conta">Passo 1 di 3</span>
+    </div>
+
+    <!-- ---------- PASSO 1 : obiettivo ---------- -->
+    <div class="passo" data-passo="1">
+
+      <fieldset class="domanda" data-req="obiettivo">
+        <legend>Qual è il tuo obiettivo principale?</legend>
+        <div class="aiuto">Scegli quello che conta di più adesso.</div>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="obiettivo" value="Dimagrire"><span class="segno"></span>Dimagrire</label>
+          <label class="scelta"><input type="radio" name="obiettivo" value="Aumentare massa muscolare"><span class="segno"></span>Aumentare massa muscolare</label>
+          <label class="scelta"><input type="radio" name="obiettivo" value="Diventare più forte"><span class="segno"></span>Diventare più forte</label>
+          <label class="scelta"><input type="radio" name="obiettivo" value="Migliorare forma fisica e benessere"><span class="segno"></span>Migliorare forma fisica e benessere</label>
+          <label class="scelta"><input type="radio" name="obiettivo" value="Migliorare la performance"><span class="segno"></span>Migliorare la performance</label>
+          <label class="scelta"><input type="radio" name="obiettivo" value="Altro" data-altro="obiettivo-altro"><span class="segno"></span>Altro</label>
+        </div>
+        <div class="altro-wrap" id="obiettivo-altro">
+          <input type="text" name="obiettivo_altro" placeholder="Scrivi il tuo obiettivo">
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="difficolta">
+        <legend>Qual è oggi la tua difficoltà principale?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="difficolta" value="Non so come allenarmi"><span class="segno"></span>Non so come allenarmi</label>
+          <label class="scelta"><input type="radio" name="difficolta" value="Mi manca costanza"><span class="segno"></span>Mi manca costanza</label>
+          <label class="scelta"><input type="radio" name="difficolta" value="Mi alleno ma non vedo risultati"><span class="segno"></span>Mi alleno ma non vedo risultati</label>
+          <label class="scelta"><input type="radio" name="difficolta" value="Alimentazione e stile di vita"><span class="segno"></span>Alimentazione e stile di vita</label>
+          <label class="scelta"><input type="radio" name="difficolta" value="Ho poco tempo"><span class="segno"></span>Ho poco tempo</label>
+          <label class="scelta"><input type="radio" name="difficolta" value="Altro" data-altro="difficolta-altro"><span class="segno"></span>Altro</label>
+        </div>
+        <div class="altro-wrap" id="difficolta-altro">
+          <input type="text" name="difficolta_altro" placeholder="Raccontamela in una riga">
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+    </div>
+
+    <!-- ---------- PASSO 2 : situazione ---------- -->
+    <div class="passo nascosto" data-passo="2">
+
+      <fieldset class="domanda" data-req="allenamento">
+        <legend>Attualmente ti alleni?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="allenamento" value="No"><span class="segno"></span>No</label>
+          <label class="scelta"><input type="radio" name="allenamento" value="Sì, 1–2 volte a settimana"><span class="segno"></span>Sì, 1–2 volte a settimana</label>
+          <label class="scelta"><input type="radio" name="allenamento" value="Sì, 3–4 volte a settimana"><span class="segno"></span>Sì, 3–4 volte a settimana</label>
+          <label class="scelta"><input type="radio" name="allenamento" value="Sì, 5+ volte a settimana"><span class="segno"></span>Sì, 5+ volte a settimana</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="luogo">
+        <legend>Dove preferisci allenarti?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="luogo" value="In palestra"><span class="segno"></span>In palestra</label>
+          <label class="scelta"><input type="radio" name="luogo" value="A casa"><span class="segno"></span>A casa</label>
+          <label class="scelta"><input type="radio" name="luogo" value="All'aperto"><span class="segno"></span>All'aperto</label>
+          <label class="scelta"><input type="radio" name="luogo" value="Sono flessibile"><span class="segno"></span>Sono flessibile</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="giorni">
+        <legend>Quante volte a settimana puoi realisticamente allenarti?</legend>
+        <div class="aiuto">Conta le settimane storte, non quelle perfette.</div>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="giorni" value="1"><span class="segno"></span>1</label>
+          <label class="scelta"><input type="radio" name="giorni" value="2"><span class="segno"></span>2</label>
+          <label class="scelta"><input type="radio" name="giorni" value="3"><span class="segno"></span>3</label>
+          <label class="scelta"><input type="radio" name="giorni" value="4+"><span class="segno"></span>4 o più</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+    </div>
+
+    <!-- ---------- PASSO 3 : percorso, contatti e consenso ---------- -->
+    <div class="passo nascosto" data-passo="3">
+
+      <fieldset class="domanda" data-req="supporto">
+        <legend>Che tipo di supporto stai cercando?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="supporto" value="Personal Training 1:1"><span class="segno"></span>Personal training 1:1</label>
+          <label class="scelta"><input type="radio" name="supporto" value="Programmazione/Coaching online"><span class="segno"></span>Programmazione e coaching online</label>
+          <label class="scelta"><input type="radio" name="supporto" value="Entrambi"><span class="segno"></span>Entrambi</label>
+          <label class="scelta"><input type="radio" name="supporto" value="Non lo so, vorrei un consiglio"><span class="segno"></span>Non lo so, vorrei un consiglio</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="inizio">
+        <legend>Quando vorresti iniziare?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="inizio" value="Subito"><span class="segno"></span>Subito</label>
+          <label class="scelta"><input type="radio" name="inizio" value="Entro 2 settimane"><span class="segno"></span>Entro 2 settimane</label>
+          <label class="scelta"><input type="radio" name="inizio" value="Entro un mese"><span class="segno"></span>Entro un mese</label>
+          <label class="scelta"><input type="radio" name="inizio" value="Sto solo valutando"><span class="segno"></span>Sto solo valutando</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <div class="domanda" data-req="nome" data-valida="testo">
+        <label class="etichetta" for="nome">Nome e cognome</label>
+        <input type="text" id="nome" name="nome" autocomplete="name" placeholder="Come ti chiami">
+        <p class="errore">Scrivi il tuo nome.</p>
+      </div>
+
+      <div class="domanda">
+        <label class="etichetta" for="note">C'è qualcosa che dovrei sapere prima di sentirci? <span class="facoltativa">— facoltativa</span></label>
+        <div class="aiuto">Infortuni, orari difficili, tentativi già fatti.</div>
+        <textarea id="note" name="note" rows="3" placeholder="Scrivi pure"></textarea>
+      </div>
+
+      <fieldset class="domanda" data-req="canale">
+        <legend>Come preferisci essere ricontattato?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="canale" value="WhatsApp"><span class="segno"></span>WhatsApp</label>
+          <label class="scelta"><input type="radio" name="canale" value="Instagram"><span class="segno"></span>Instagram</label>
+          <label class="scelta"><input type="radio" name="canale" value="Email"><span class="segno"></span>Email</label>
+        </div>
+        <p class="errore">Scegli un canale per andare avanti.</p>
+      </fieldset>
+
+      <div class="domanda nascosto" id="box-contatto" data-req="contatto" data-valida="contatto">
+        <label class="etichetta" for="contatto" id="label-contatto">Contatto</label>
+        <input type="text" id="contatto" name="contatto" placeholder="">
+        <p class="errore" id="errore-contatto">Serve un recapito per ricontattarti.</p>
+      </div>
+
+      <div class="domanda consenso" data-req="privacy" data-valida="check">
+        <label class="scelta">
+          <input type="checkbox" name="privacy" value="Sì"><span class="segno"></span>
+          <span>Ho letto l'<a href="privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei miei dati — comprese le informazioni sulla salute che ho scritto qui — per essere ricontattato e valutare il percorso più adatto.</span>
+        </label>
+        <p class="errore">Senza il tuo consenso non posso conservare le risposte né ricontattarti.</p>
+        <p class="nota-privacy">
+          Puoi revocare il consenso e chiedere la cancellazione dei tuoi dati in qualsiasi momento:
+          trovi come fare nell'<a href="privacy.html" target="_blank" rel="noopener">informativa</a>. Non uso i tuoi dati per altro e non li cedo a nessuno.
+        </p>
+      </div>
+
+      <div class="honey" aria-hidden="true">
+        <label>Non compilare<input type="text" name="sito" tabindex="-1" autocomplete="off"></label>
+      </div>
+
+    </div>
+
+    <div class="navigazione">
+      <button type="button" class="btn btn-ghost indietro nascosto">Indietro</button>
+      <button type="button" class="btn avanti">Continua</button>
+    </div>
+    <p class="avviso-invio">Le risposte non sono partite. Controlla la connessione e premi di nuovo Invia.</p>
+
+  </form>
+
+  <!-- ===================== CHECK-IN MENSILE ===================== -->
+  <form id="form-mensile" class="nascosto" novalidate autocomplete="on">
+
+    <div class="avanzamento" aria-hidden="true"></div>
+
+    <div class="titolo-passo">
+      <h2>Il mese appena passato</h2>
+      <span class="conta">Passo 1 di 3</span>
+    </div>
+
+    <!-- ---------- PASSO 1 : il mese appena passato ---------- -->
+    <div class="passo" data-passo="1">
+
+      <div class="domanda" data-req="nome" data-valida="testo">
+        <label class="etichetta" for="nome-m">Nome e cognome</label>
+        <div class="aiuto">Serve per collegare il check-in alla tua scheda.</div>
+        <input type="text" id="nome-m" name="nome" autocomplete="name" placeholder="Come ti chiami">
+        <p class="errore">Scrivi il tuo nome.</p>
+      </div>
+
+      <div class="domanda" data-req="periodo" data-valida="testo">
+        <label class="etichetta" for="periodo">Mese di riferimento</label>
+        <select id="periodo" name="periodo"></select>
+        <p class="errore">Scegli il mese.</p>
+      </div>
+
+      <fieldset class="domanda" data-req="aderenza">
+        <legend>Quanti degli allenamenti previsti hai completato?</legend>
+        <div class="aiuto">Rispondi onesto: serve a me per tarare il carico, non è un esame.</div>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="aderenza" value="Tutti"><span class="segno"></span>Tutti</label>
+          <label class="scelta"><input type="radio" name="aderenza" value="Quasi tutti (circa 3 su 4)"><span class="segno"></span>Quasi tutti, circa 3 su 4</label>
+          <label class="scelta"><input type="radio" name="aderenza" value="Circa metà"><span class="segno"></span>Circa metà</label>
+          <label class="scelta"><input type="radio" name="aderenza" value="Meno della metà"><span class="segno"></span>Meno della metà</label>
+          <label class="scelta"><input type="radio" name="aderenza" value="Quasi nessuno"><span class="segno"></span>Quasi nessuno</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="alimentazione">
+        <legend>Quanto hai seguito le indicazioni alimentari?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="alimentazione" value="Sempre"><span class="segno"></span>Sempre</label>
+          <label class="scelta"><input type="radio" name="alimentazione" value="Quasi sempre"><span class="segno"></span>Quasi sempre</label>
+          <label class="scelta"><input type="radio" name="alimentazione" value="A tratti"><span class="segno"></span>A tratti</label>
+          <label class="scelta"><input type="radio" name="alimentazione" value="Poco"><span class="segno"></span>Poco</label>
+          <label class="scelta"><input type="radio" name="alimentazione" value="Non erano previste"><span class="segno"></span>Non erano previste</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+    </div>
+
+    <!-- ---------- PASSO 2 : corpo e sensazioni ---------- -->
+    <div class="passo nascosto" data-passo="2">
+
+      <div class="domanda">
+        <label class="etichetta" for="peso">Peso attuale <span class="facoltativa">— facoltativo</span></label>
+        <div class="aiuto">Se ti pesi, meglio al mattino a digiuno.</div>
+        <div class="misura">
+          <input type="number" id="peso" name="peso" inputmode="decimal" step="0.1" min="30" max="300" placeholder="es. 78,5">
+          <span class="unita">kg</span>
+        </div>
+      </div>
+
+      <div class="domanda">
+        <label class="etichetta" for="girovita">Girovita <span class="facoltativa">— facoltativo</span></label>
+        <div class="misura">
+          <input type="number" id="girovita" name="girovita" inputmode="decimal" step="0.5" min="40" max="200" placeholder="es. 84">
+          <span class="unita">cm</span>
+        </div>
+      </div>
+
+      <fieldset class="domanda" data-req="fisico">
+        <legend>Come ti vedi rispetto al mese scorso?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="fisico" value="Molto meglio"><span class="segno"></span>Molto meglio</label>
+          <label class="scelta"><input type="radio" name="fisico" value="Un po' meglio"><span class="segno"></span>Un po' meglio</label>
+          <label class="scelta"><input type="radio" name="fisico" value="Uguale"><span class="segno"></span>Uguale</label>
+          <label class="scelta"><input type="radio" name="fisico" value="Peggio"><span class="segno"></span>Peggio</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="forza">
+        <legend>E in termini di forza?</legend>
+        <div class="aiuto">Pensa ai carichi o alle ripetizioni sugli stessi esercizi.</div>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="forza" value="Decisamente più forte"><span class="segno"></span>Decisamente più forte</label>
+          <label class="scelta"><input type="radio" name="forza" value="Un po' più forte"><span class="segno"></span>Un po' più forte</label>
+          <label class="scelta"><input type="radio" name="forza" value="Uguale"><span class="segno"></span>Uguale</label>
+          <label class="scelta"><input type="radio" name="forza" value="Sono calato"><span class="segno"></span>Sono calato</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="energia">
+        <legend>Come sono stati energia e recupero?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="energia" value="Ottimi"><span class="segno"></span>Ottimi, arrivo carico agli allenamenti</label>
+          <label class="scelta"><input type="radio" name="energia" value="Buoni"><span class="segno"></span>Buoni</label>
+          <label class="scelta"><input type="radio" name="energia" value="Altalenanti"><span class="segno"></span>Altalenanti</label>
+          <label class="scelta"><input type="radio" name="energia" value="Sono spesso stanco"><span class="segno"></span>Sono spesso stanco</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="sonno">
+        <legend>Come hai dormito?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="sonno" value="Bene"><span class="segno"></span>Bene, 7 ore o più</label>
+          <label class="scelta"><input type="radio" name="sonno" value="Abbastanza bene"><span class="segno"></span>Abbastanza bene, 6-7 ore</label>
+          <label class="scelta"><input type="radio" name="sonno" value="Poco"><span class="segno"></span>Poco, meno di 6 ore</label>
+          <label class="scelta"><input type="radio" name="sonno" value="Male e in modo irregolare"><span class="segno"></span>Male e in modo irregolare</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <fieldset class="domanda" data-req="dolori">
+        <legend>Hai avuto dolori, fastidi o infortuni?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="dolori" value="No"><span class="segno"></span>No, tutto bene</label>
+          <label class="scelta"><input type="radio" name="dolori" value="Sì" data-altro="dolori-dettaglio"><span class="segno"></span>Sì</label>
+        </div>
+        <div class="altro-wrap" id="dolori-dettaglio">
+          <input type="text" name="dolori_altro" placeholder="Dove e quando lo senti">
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+    </div>
+
+    <!-- ---------- PASSO 3 : il mese che arriva ---------- -->
+    <div class="passo nascosto" data-passo="3">
+
+      <div class="domanda">
+        <label class="etichetta" for="funzionato">Cosa ha funzionato meglio? <span class="facoltativa">— facoltativa</span></label>
+        <textarea id="funzionato" name="funzionato" rows="3" placeholder="Un'abitudine, un esercizio, un orario"></textarea>
+      </div>
+
+      <div class="domanda">
+        <label class="etichetta" for="ostacoli">Cosa ti ha ostacolato? <span class="facoltativa">— facoltativa</span></label>
+        <div class="aiuto">Lavoro, viaggi, motivazione, un esercizio che non ti torna.</div>
+        <textarea id="ostacoli" name="ostacoli" rows="3" placeholder="Scrivi pure"></textarea>
+      </div>
+
+      <div class="domanda" data-req="obiettivo_mese" data-valida="testo">
+        <label class="etichetta" for="obiettivo_mese">Su cosa vuoi concentrarti il mese prossimo?</label>
+        <input type="text" id="obiettivo_mese" name="obiettivo_mese" placeholder="Una cosa sola, quella che conta">
+        <p class="errore">Scrivi almeno un obiettivo.</p>
+      </div>
+
+      <fieldset class="domanda" data-req="call">
+        <legend>Ti serve che ci sentiamo?</legend>
+        <div class="scelte">
+          <label class="scelta"><input type="radio" name="call" value="Sì, il prima possibile"><span class="segno"></span>Sì, il prima possibile</label>
+          <label class="scelta"><input type="radio" name="call" value="Sì, quando hai tempo"><span class="segno"></span>Sì, quando hai tempo</label>
+          <label class="scelta"><input type="radio" name="call" value="No, va tutto bene così"><span class="segno"></span>No, va tutto bene così</label>
+        </div>
+        <p class="errore">Scegli un'opzione per andare avanti.</p>
+      </fieldset>
+
+      <div class="domanda consenso" data-req="privacy" data-valida="check">
+        <label class="scelta">
+          <input type="checkbox" name="privacy" value="Sì"><span class="segno"></span>
+          <span>Ho letto l'<a href="privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento di questi dati — compresi peso, misure e informazioni sulla salute — per seguire il mio percorso e aggiornare il programma.</span>
+        </label>
+        <p class="errore">Senza il tuo consenso non posso conservare il check-in.</p>
+        <p class="nota-privacy">
+          Puoi revocare il consenso e chiedere la cancellazione dei tuoi dati in qualsiasi momento:
+          trovi come fare nell'<a href="privacy.html" target="_blank" rel="noopener">informativa</a>.
+        </p>
+      </div>
+
+      <div class="honey" aria-hidden="true">
+        <label>Non compilare<input type="text" name="sito" tabindex="-1" autocomplete="off"></label>
+      </div>
+
+    </div>
+
+    <div class="navigazione">
+      <button type="button" class="btn btn-ghost indietro nascosto">Indietro</button>
+      <button type="button" class="btn avanti">Continua</button>
+    </div>
+    <p class="avviso-invio">Le risposte non sono partite. Controlla la connessione e premi di nuovo Invia.</p>
+
+  </form>
+
+  <!-- ===================== INVIO IN CORSO ===================== -->
+  <section id="invio" class="nascosto" aria-live="polite">
+    <div class="barre" aria-hidden="true"><span></span><span></span><span></span></div>
+    <h2>Sto inviando<br>le tue risposte</h2>
+    <p>Un istante.</p>
+  </section>
+
+  <!-- ===================== INVIO NON RIUSCITO ===================== -->
+  <section id="ko" class="nascosto" aria-live="polite">
+    <h2>Le risposte non sono partite</h2>
+    <p>Di solito è la connessione. Le tue risposte sono ancora qui: premi di nuovo e riparte da dove eravamo.</p>
+    <button type="button" class="btn" id="riprova">Invia di nuovo</button>
+  </section>
+
+  <!-- ===================== FINE ===================== -->
+  <section id="fine" class="nascosto">
+    <div class="riga"></div>
+
+    <div id="fine-nuovo">
+      <h2>Perfetto.<br>Ho ricevuto le tue risposte.</h2>
+      <p>Le valuterò personalmente per capire quale percorso LDA Performance può essere più adatto al tuo obiettivo.</p>
+      <p>Ti ricontatterò per il prossimo step.</p>
+    </div>
+
+    <div id="fine-mensile" class="nascosto">
+      <h2>Ricevuto.<br>Ci vediamo sui numeri.</h2>
+      <p>Guardo il tuo check-in e aggiorno il programma dove serve.</p>
+      <p>Se hai chiesto di sentirci, ti scrivo io.</p>
+    </div>
+
+    <p class="firma">Rispetto · Costanza · Disciplina · Impegno · <b>Crescita continua</b></p>
+    <p class="pie"><a href="privacy.html" target="_blank" rel="noopener">Informativa privacy</a> · Puoi chiedere in qualsiasi momento la cancellazione dei tuoi dati.</p>
+  </section>
+
+</div>
+
+<script>
+/* =================================================================
+   Indirizzo a cui vengono consegnate le risposte (Apps Script).
+   Da cambiare solo se in futuro viene creato un nuovo deployment.
+   ================================================================= */
+const ENDPOINT = ''; // vuoto in anteprima: l'indirizzo vero sta solo nella versione pubblicata
+
+/* Versione dell'informativa accettata: va allineata a quella scritta
+   in privacy.html. Se l'informativa cambia, alza il numero: nel foglio
+   resta traccia di quale testo ha accettato ogni persona. */
+const VERSIONE_PRIVACY = '1.0';
+
+const PANNELLI = ['porta', 'form-nuovo', 'form-mensile', 'invio', 'ko', 'fine'];
+
+function pannello(quale) {
+  PANNELLI.forEach((p) => document.getElementById(p).classList.toggle('nascosto', p !== quale));
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+/* ---- da quale social è arrivato: ?src=instagram ---- */
+const provenienza = (new URLSearchParams(location.search).get('src') || 'Link diretto')
+  .slice(0, 40).replace(/[<>]/g, '');
+
+/* =================================================================
+   Wizard: stessa meccanica per entrambi i questionari.
+   Ogni form ha i suoi .passo, la sua barra e i suoi bottoni.
+   ================================================================= */
+function creaWizard(idForm, titoli, tipo) {
+  const form = document.getElementById(idForm);
+  const passi = [...form.querySelectorAll('.passo')];
+  const barra = form.querySelector('.avanzamento');
+  const titolo = form.querySelector('.titolo-passo h2');
+  const conta = form.querySelector('.conta');
+  const btnAvanti = form.querySelector('.avanti');
+  const btnIndietro = form.querySelector('.indietro');
+  const avviso = form.querySelector('.avviso-invio');
+  let passo = 0;
+
+  barra.innerHTML = passi.map(() => '<span class="tacca"></span>').join('');
+  const tacche = [...barra.querySelectorAll('.tacca')];
+
+  function mostra(n) {
+    passo = n;
+    passi.forEach((p, k) => p.classList.toggle('nascosto', k !== n));
+    tacche.forEach((t, k) => t.classList.toggle('on', k <= n));
+    titolo.textContent = titoli[n];
+    conta.textContent = 'Passo ' + (n + 1) + ' di ' + passi.length;
+    btnIndietro.classList.toggle('nascosto', n === 0);
+    btnAvanti.textContent = n === passi.length - 1 ? 'Invia' : 'Continua';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  /* campi di dettaglio ("Altro", "Sì, ho dolori") */
+  form.addEventListener('change', (e) => {
+    const gruppo = e.target.closest('.domanda');
+    if (!gruppo) return;
+    gruppo.classList.remove('ko');
+    const wrap = gruppo.querySelector('.altro-wrap');
+    if (wrap) wrap.classList.toggle('on', !!gruppo.querySelector('input[data-altro]:checked'));
+    if (e.target.name === 'canale') adattaContatto(e.target.value);
+  });
+
+  form.addEventListener('input', (e) => {
+    e.target.closest('.domanda')?.classList.remove('ko');
+  });
+
+  btnIndietro.addEventListener('click', () => mostra(passo - 1));
+
+  btnAvanti.addEventListener('click', () => {
+    if (!valida(passi[passo], form)) return;
+    if (passo < passi.length - 1) { mostra(passo + 1); return; }
+    invia(form, tipo, btnAvanti, avviso);
+  });
+
+  return { avvia() { pannello(idForm); mostra(0); } };
+}
+
+/* =================================================================
+   Validazione
+   data-valida="radio"    (predefinito) una scelta selezionata
+   data-valida="testo"    almeno 2 caratteri
+   data-valida="check"    casella spuntata (consenso privacy)
+   data-valida="contatto" recapito coerente col canale scelto
+   ================================================================= */
+function valida(sezione, form) {
+  let ok = true, primo = null;
+  sezione.querySelectorAll('[data-req]').forEach((gruppo) => {
+    if (gruppo.classList.contains('nascosto')) return;
+    const nome = gruppo.dataset.req;
+    const modo = gruppo.dataset.valida || 'radio';
+    let buono;
+    if (modo === 'testo') {
+      buono = gruppo.querySelector('[name="' + nome + '"]').value.trim().length >= 2;
+    } else if (modo === 'check') {
+      buono = gruppo.querySelector('[name="' + nome + '"]').checked;
+    } else if (modo === 'contatto') {
+      buono = contattoValido(form);
+    } else {
+      buono = !!form.querySelector('input[name="' + nome + '"]:checked');
+    }
+    gruppo.classList.toggle('ko', !buono);
+    if (!buono) { ok = false; if (!primo) primo = gruppo; }
+  });
+  if (primo) primo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  return ok;
+}
+
+function contattoValido(form) {
+  const canale = form.querySelector('input[name="canale"]:checked')?.value;
+  const v = document.getElementById('contatto').value.trim();
+  if (!canale) return false;
+  if (canale === 'Email') return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v);
+  if (canale === 'WhatsApp') return (v.replace(/\D/g, '').length >= 8);
+  return v.length >= 2;
+}
+
+function adattaContatto(canale) {
+  const box = document.getElementById('box-contatto');
+  const campo = document.getElementById('contatto');
+  const label = document.getElementById('label-contatto');
+  const err = document.getElementById('errore-contatto');
+  box.classList.remove('nascosto', 'ko');
+  campo.value = '';
+  if (canale === 'WhatsApp') {
+    label.textContent = 'Il tuo numero WhatsApp';
+    campo.type = 'tel'; campo.placeholder = '333 1234567'; campo.autocomplete = 'tel';
+    err.textContent = 'Scrivi un numero valido.';
+  } else if (canale === 'Instagram') {
+    label.textContent = 'Il tuo profilo Instagram';
+    campo.type = 'text'; campo.placeholder = '@iltuonome'; campo.autocomplete = 'off';
+    err.textContent = 'Scrivi il tuo nome utente.';
+  } else {
+    label.textContent = 'La tua email';
+    campo.type = 'email'; campo.placeholder = 'nome@esempio.it'; campo.autocomplete = 'email';
+    err.textContent = 'Scrivi un indirizzo email valido.';
+  }
+}
+
+/* =================================================================
+   Raccolta delle risposte: legge tutti i campi con un nome.
+   I campi di dettaglio "X_altro" vengono uniti alla risposta X
+   ("Altro: corsa in montagna", "Sì: fastidio alla spalla").
+   ================================================================= */
+function raccogli(form) {
+  const dati = {};
+  form.querySelectorAll('input, select, textarea').forEach((campo) => {
+    const nome = campo.name;
+    if (!nome || nome === 'sito') return;
+    if (campo.type === 'radio') {
+      if (!(nome in dati)) dati[nome] = '';
+      if (campo.checked) dati[nome] = campo.value;
+    } else if (campo.type === 'checkbox') {
+      dati[nome] = campo.checked ? 'Sì' : 'No';
+    } else {
+      dati[nome] = campo.value.trim();
+    }
+  });
+
+  Object.keys(dati).filter((k) => k.endsWith('_altro')).forEach((chiave) => {
+    const base = chiave.slice(0, -6);
+    const testo = dati[chiave];
+    const wrap = form.querySelector('[name="' + chiave + '"]').closest('.altro-wrap');
+    if (testo && wrap && wrap.classList.contains('on') && base in dati) {
+      dati[base] = dati[base] + ': ' + testo;
+    }
+    delete dati[chiave];
+  });
+
+  return dati;
+}
+
+/* L'attesa vera di Apps Script è di qualche secondo: apertura del progetto,
+   scrittura sul foglio, invio dell'email. Non facciamo aspettare la persona.
+   La richiesta parte con keepalive, quindi il browser la porta a termine
+   anche dopo che la pagina è cambiata o è stata chiusa.                    */
+const ATTESA_MIN = 700;   // il loader resta almeno questo tempo
+const ATTESA_MAX = 1600;  // oltre, si va avanti comunque
+
+let ultimoInvio = null;
+
+function invia(form, tipo, btn, avviso) {
+  if (form.querySelector('[name="sito"]').value) { chiudi(tipo); return; }
+
+  const dati = raccogli(form);
+  dati.tipo = tipo;
+  dati.provenienza = provenienza;
+  dati.privacy_versione = VERSIONE_PRIVACY;
+  dati.compilato_il = new Date().toISOString();
+
+  ultimoInvio = { dati, tipo, btn, avviso };
+  spedisci(ultimoInvio);
+}
+
+async function spedisci(invio) {
+  pannello('invio');
+  invio.btn.disabled = true;
+  invio.avviso.classList.remove('on');
+
+  const partenza = Date.now();
+
+  /* ANTEPRIMA — l'invio è disattivato: le risposte restano nel browser
+     e non raggiungono né il foglio Google né nessun altro posto.
+     Nella versione da pubblicare qui c'è la chiamata fetch a ENDPOINT. */
+  console.log('Anteprima, risposte non inviate:', invio.dati);
+  const richiesta = Promise.resolve('ok');
+
+  const scadenza = new Promise((r) => setTimeout(() => r('lento'), ATTESA_MAX));
+  const esito = await Promise.race([richiesta, scadenza]);
+
+  const passato = Date.now() - partenza;
+  if (passato < ATTESA_MIN) await new Promise((r) => setTimeout(r, ATTESA_MIN - passato));
+
+  invio.btn.disabled = false;
+  if (esito === 'ko') pannello('ko');
+  else chiudi(invio.tipo);
+}
+
+document.getElementById('riprova').addEventListener('click', () => {
+  if (ultimoInvio) spedisci(ultimoInvio);
+});
+
+function chiudi(tipo) {
+  document.getElementById('fine-nuovo').classList.toggle('nascosto', tipo !== 'nuovo');
+  document.getElementById('fine-mensile').classList.toggle('nascosto', tipo !== 'mensile');
+  pannello('fine');
+}
+
+/* ---- mesi selezionabili nel check-in: quello in corso e i due precedenti ---- */
+function riempiPeriodo() {
+  const sel = document.getElementById('periodo');
+  const mesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno',
+                'luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  const oggi = new Date();
+  for (let i = 0; i < 3; i++) {
+    const d = new Date(oggi.getFullYear(), oggi.getMonth() - i, 1);
+    const etichetta = mesi[d.getMonth()] + ' ' + d.getFullYear();
+    const opzione = document.createElement('option');
+    opzione.value = etichetta;
+    opzione.textContent = etichetta.charAt(0).toUpperCase() + etichetta.slice(1);
+    sel.appendChild(opzione);
+  }
+}
+riempiPeriodo();
+
+/* ---- i due percorsi ---- */
+const wizardNuovo = creaWizard('form-nuovo',
+  ['Il tuo obiettivo', 'La tua situazione', 'Il percorso'], 'nuovo');
+
+const wizardMensile = creaWizard('form-mensile',
+  ['Il mese appena passato', 'Corpo e sensazioni', 'Il mese che arriva'], 'mensile');
+
+document.querySelectorAll('.porta-btn').forEach((b) => {
+  b.addEventListener('click', () => {
+    (b.dataset.va === 'mensile' ? wizardMensile : wizardNuovo).avvia();
+  });
+});
+
+/* Link diretto, per saltare la schermata di scelta:
+     ...?tipo=mensile   il check-in da mandare ogni mese ai clienti
+     ...?tipo=nuovo     il questionario da mettere in bio su Instagram
+   Si può combinare con ?src=  →  ...?tipo=nuovo&src=instagram          */
+const tipoRichiesto = new URLSearchParams(location.search).get('tipo');
+if (tipoRichiesto === 'mensile' || tipoRichiesto === 'cliente') wizardMensile.avvia();
+else if (tipoRichiesto === 'nuovo') wizardNuovo.avvia();
+</script>
+</body>
+</html>
