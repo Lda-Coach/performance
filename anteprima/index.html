@@ -16,7 +16,7 @@
 <style>
   /* ============================================================
      LDA Coach Performance — questionari
-     Due percorsi: nuovo contatto e check-in mensile dei clienti.
+     Due percorsi: nuovo contatto e check mensile dei clienti.
      Collegata al foglio Google tramite Apps Script.
      ============================================================ */
 
@@ -94,19 +94,24 @@
 
   .porte{display:flex;flex-direction:column;gap:.9rem}
   .porta-btn{
-    display:block;width:100%;text-align:left;cursor:pointer;
-    background:var(--nero-3);border:1px solid var(--bordo);
-    border-left:3px solid var(--bordo);
-    padding:1.15rem 1.1rem;
+    display:block;width:100%;text-align:left;cursor:pointer;position:relative;
+    background:#1A1A1A;border:1px solid #3A3A3A;
+    border-left:3px solid var(--accento);
+    padding:1.15rem 2.5rem 1.15rem 1.1rem;
     font-family:inherit;color:var(--grigio);
     transition:border-color .15s ease,background .15s ease;
   }
-  .porta-btn:hover,.porta-btn:focus-visible{border-color:#3A3A3A;border-left-color:var(--accento);background:#181818}
+  .porta-btn::after{
+    content:"›";position:absolute;right:.95rem;top:50%;transform:translateY(-50%);
+    font-family:'Bebas Neue',Impact,sans-serif;font-size:2rem;line-height:1;color:var(--accento);
+  }
+  .porta-btn:hover,.porta-btn:focus-visible{border-color:var(--accento);background:#242424}
   .porta-tit{
     display:block;font-family:'Bebas Neue',Impact,sans-serif;
     font-size:1.6rem;color:var(--bianco);letter-spacing:.03em;line-height:1.1;
     margin-bottom:.3rem;
   }
+  .porta-tit i{font-style:normal;color:var(--accento)}
   .porta-txt{display:block;font-size:.88rem;color:var(--grigio-2);line-height:1.5}
 
   /* ---------- bottoni ---------- */
@@ -185,6 +190,29 @@
   .misura{display:flex;align-items:center;gap:.6rem}
   .misura input{flex:1}
   .misura .unita{margin-top:.7rem;color:var(--grigio-2);font-size:.9rem;font-weight:600}
+
+
+  /* ---------- circonferenze con istruzioni a scomparsa ---------- */
+  .circonferenze{display:flex;flex-direction:column;gap:1.3rem;margin-top:.9rem}
+  .mis-riga .nome{display:block;font-weight:600;color:var(--bianco);font-size:.94rem;margin-bottom:.2rem}
+  .come{font-size:.78rem}
+  .come summary{
+    list-style:none;cursor:pointer;color:var(--grigio-2);
+    display:inline-flex;align-items:center;gap:.35rem;padding:.15rem 0;
+  }
+  .come summary::-webkit-details-marker{display:none}
+  .come summary::before{
+    content:"i";display:inline-flex;align-items:center;justify-content:center;
+    width:16px;height:16px;flex:0 0 16px;border:1px solid var(--grigio-2);border-radius:50%;
+    font-size:.66rem;font-weight:700;font-style:italic;line-height:1;
+  }
+  .come[open] summary{color:var(--accento)}
+  .come[open] summary::before{border-color:var(--accento)}
+  .come p{
+    margin-top:.5rem;color:var(--grigio-2);line-height:1.55;
+    border-left:2px solid var(--bordo);padding-left:.75rem;
+  }
+  .mis-riga .misura input{margin-top:.5rem}
 
   .errore{color:var(--errore);font-size:.82rem;margin-top:.55rem;display:none}
   .domanda.ko .errore{display:block}
@@ -285,8 +313,8 @@
         <span class="porta-txt">10 domande, 2 minuti. Leggo le tue risposte personalmente e ti ricontatto sul canale che preferisci.</span>
       </button>
       <button type="button" class="porta-btn" data-va="mensile">
-        <span class="porta-tit">Sono già seguito da LDA</span>
-        <span class="porta-txt">Check-in del mese: mi racconti com'è andata e aggiustiamo il programma sui tuoi numeri.</span>
+        <span class="porta-tit">Sono già seguito da LD<i>A</i></span>
+        <span class="porta-txt">Check del mese: raccontami ed ottimizziamo sui tuoi progressi.</span>
       </button>
     </div>
 
@@ -462,7 +490,7 @@
 
   </form>
 
-  <!-- ===================== CHECK-IN MENSILE ===================== -->
+  <!-- ===================== CHECK MENSILE ===================== -->
   <form id="form-mensile" class="nascosto" novalidate autocomplete="on">
 
     <div class="avanzamento" aria-hidden="true"></div>
@@ -477,7 +505,7 @@
 
       <div class="domanda" data-req="nome" data-valida="testo">
         <label class="etichetta" for="nome-m">Nome e cognome</label>
-        <div class="aiuto">Serve per collegare il check-in alla tua scheda.</div>
+        <div class="aiuto">Serve per collegare il check alla tua scheda.</div>
         <input type="text" id="nome-m" name="nome" autocomplete="name" placeholder="Come ti chiami">
         <p class="errore">Scrivi il tuo nome.</p>
       </div>
@@ -493,10 +521,8 @@
         <div class="aiuto">Rispondi onesto: serve a me per tarare il carico, non è un esame.</div>
         <div class="scelte">
           <label class="scelta"><input type="radio" name="aderenza" value="Tutti"><span class="segno"></span>Tutti</label>
-          <label class="scelta"><input type="radio" name="aderenza" value="Quasi tutti (circa 3 su 4)"><span class="segno"></span>Quasi tutti, circa 3 su 4</label>
           <label class="scelta"><input type="radio" name="aderenza" value="Circa metà"><span class="segno"></span>Circa metà</label>
-          <label class="scelta"><input type="radio" name="aderenza" value="Meno della metà"><span class="segno"></span>Meno della metà</label>
-          <label class="scelta"><input type="radio" name="aderenza" value="Quasi nessuno"><span class="segno"></span>Quasi nessuno</label>
+          <label class="scelta"><input type="radio" name="aderenza" value="Un allenamento"><span class="segno"></span>Un allenamento</label>
         </div>
         <p class="errore">Scegli un'opzione per andare avanti.</p>
       </fieldset>
@@ -506,9 +532,7 @@
         <div class="scelte">
           <label class="scelta"><input type="radio" name="alimentazione" value="Sempre"><span class="segno"></span>Sempre</label>
           <label class="scelta"><input type="radio" name="alimentazione" value="Quasi sempre"><span class="segno"></span>Quasi sempre</label>
-          <label class="scelta"><input type="radio" name="alimentazione" value="A tratti"><span class="segno"></span>A tratti</label>
-          <label class="scelta"><input type="radio" name="alimentazione" value="Poco"><span class="segno"></span>Poco</label>
-          <label class="scelta"><input type="radio" name="alimentazione" value="Non erano previste"><span class="segno"></span>Non erano previste</label>
+          <label class="scelta"><input type="radio" name="alimentazione" value="Poco, con difficoltà"><span class="segno"></span>Poco, con difficoltà</label>
         </div>
         <p class="errore">Scegli un'opzione per andare avanti.</p>
       </fieldset>
@@ -520,26 +544,69 @@
 
       <div class="domanda">
         <label class="etichetta" for="peso">Peso attuale <span class="facoltativa">— facoltativo</span></label>
-        <div class="aiuto">Se ti pesi, meglio al mattino a digiuno.</div>
+        <div class="aiuto">Preferibilmente al mattino, a digiuno.</div>
         <div class="misura">
           <input type="number" id="peso" name="peso" inputmode="decimal" step="0.1" min="30" max="300" placeholder="es. 78,5">
           <span class="unita">kg</span>
         </div>
       </div>
 
-      <div class="domanda">
-        <label class="etichetta" for="girovita">Girovita <span class="facoltativa">— facoltativo</span></label>
-        <div class="misura">
-          <input type="number" id="girovita" name="girovita" inputmode="decimal" step="0.5" min="40" max="200" placeholder="es. 84">
-          <span class="unita">cm</span>
-        </div>
-      </div>
+      <fieldset class="domanda">
+        <legend>Circonferenze <span class="facoltativa">— facoltative</span></legend>
+        <div class="aiuto">Metro aderente ma senza stringere, sempre nello stesso punto e alla stessa ora. Se non le misuri, salta pure.</div>
 
+        <div class="circonferenze">
+
+          <div class="mis-riga">
+            <span class="nome">Petto</span>
+            <details class="come"><summary>Come si misura</summary>
+              <p>In piedi, braccia rilassate lungo i fianchi. Il metro passa orizzontale all'altezza dei capezzoli, parallelo al pavimento. Misura a fine espirazione normale, senza gonfiare il torace.</p>
+            </details>
+            <div class="misura">
+              <input type="number" id="petto" name="petto" inputmode="decimal" step="0.5" min="50" max="200" placeholder="es. 102">
+              <span class="unita">cm</span>
+            </div>
+          </div>
+
+          <div class="mis-riga">
+            <span class="nome">Girovita</span>
+            <details class="come"><summary>Come si misura</summary>
+              <p>Nel punto più stretto del tronco, di solito poco sopra l'ombelico. In piedi, addome rilassato: non tirare in dentro la pancia. Misura a fine espirazione normale.</p>
+            </details>
+            <div class="misura">
+              <input type="number" id="girovita" name="girovita" inputmode="decimal" step="0.5" min="40" max="200" placeholder="es. 84">
+              <span class="unita">cm</span>
+            </div>
+          </div>
+
+          <div class="mis-riga">
+            <span class="nome">Fianchi</span>
+            <details class="come"><summary>Come si misura</summary>
+              <p>In piedi con i piedi uniti. Il metro passa sul punto più sporgente dei glutei, orizzontale tutto intorno.</p>
+            </details>
+            <div class="misura">
+              <input type="number" id="fianchi" name="fianchi" inputmode="decimal" step="0.5" min="50" max="200" placeholder="es. 98">
+              <span class="unita">cm</span>
+            </div>
+          </div>
+
+          <div class="mis-riga">
+            <span class="nome">Coscia</span>
+            <details class="come"><summary>Come si misura</summary>
+              <p>In piedi, peso distribuito su entrambe le gambe. Misura a metà strada fra la piega inguinale e il ginocchio, sempre sulla stessa gamba: segnati quale, per confrontare i mesi.</p>
+            </details>
+            <div class="misura">
+              <input type="number" id="coscia" name="coscia" inputmode="decimal" step="0.5" min="30" max="120" placeholder="es. 58">
+              <span class="unita">cm</span>
+            </div>
+          </div>
+
+        </div>
+      </fieldset>
       <fieldset class="domanda" data-req="fisico">
-        <legend>Come ti vedi rispetto al mese scorso?</legend>
+        <legend>Come ti senti rispetto al mese scorso?</legend>
         <div class="scelte">
           <label class="scelta"><input type="radio" name="fisico" value="Molto meglio"><span class="segno"></span>Molto meglio</label>
-          <label class="scelta"><input type="radio" name="fisico" value="Un po' meglio"><span class="segno"></span>Un po' meglio</label>
           <label class="scelta"><input type="radio" name="fisico" value="Uguale"><span class="segno"></span>Uguale</label>
           <label class="scelta"><input type="radio" name="fisico" value="Peggio"><span class="segno"></span>Peggio</label>
         </div>
@@ -553,18 +620,16 @@
           <label class="scelta"><input type="radio" name="forza" value="Decisamente più forte"><span class="segno"></span>Decisamente più forte</label>
           <label class="scelta"><input type="radio" name="forza" value="Un po' più forte"><span class="segno"></span>Un po' più forte</label>
           <label class="scelta"><input type="radio" name="forza" value="Uguale"><span class="segno"></span>Uguale</label>
-          <label class="scelta"><input type="radio" name="forza" value="Sono calato"><span class="segno"></span>Sono calato</label>
         </div>
         <p class="errore">Scegli un'opzione per andare avanti.</p>
       </fieldset>
 
       <fieldset class="domanda" data-req="energia">
-        <legend>Come sono stati energia e recupero?</legend>
+        <legend>Come hai percepito energia e recupero?</legend>
         <div class="scelte">
           <label class="scelta"><input type="radio" name="energia" value="Ottimi"><span class="segno"></span>Ottimi, arrivo carico agli allenamenti</label>
           <label class="scelta"><input type="radio" name="energia" value="Buoni"><span class="segno"></span>Buoni</label>
           <label class="scelta"><input type="radio" name="energia" value="Altalenanti"><span class="segno"></span>Altalenanti</label>
-          <label class="scelta"><input type="radio" name="energia" value="Sono spesso stanco"><span class="segno"></span>Sono spesso stanco</label>
         </div>
         <p class="errore">Scegli un'opzione per andare avanti.</p>
       </fieldset>
@@ -572,10 +637,9 @@
       <fieldset class="domanda" data-req="sonno">
         <legend>Come hai dormito?</legend>
         <div class="scelte">
-          <label class="scelta"><input type="radio" name="sonno" value="Bene"><span class="segno"></span>Bene, 7 ore o più</label>
-          <label class="scelta"><input type="radio" name="sonno" value="Abbastanza bene"><span class="segno"></span>Abbastanza bene, 6-7 ore</label>
-          <label class="scelta"><input type="radio" name="sonno" value="Poco"><span class="segno"></span>Poco, meno di 6 ore</label>
-          <label class="scelta"><input type="radio" name="sonno" value="Male e in modo irregolare"><span class="segno"></span>Male e in modo irregolare</label>
+          <label class="scelta"><input type="radio" name="sonno" value="Bene, 7 ore o più"><span class="segno"></span>Bene, 7 ore o più</label>
+          <label class="scelta"><input type="radio" name="sonno" value="Abbastanza bene, circa 6 ore"><span class="segno"></span>Abbastanza bene, circa 6 ore</label>
+          <label class="scelta"><input type="radio" name="sonno" value="Con poca regolarità, meno di 6 ore"><span class="segno"></span>Con poca regolarità, meno di 6 ore</label>
         </div>
         <p class="errore">Scegli un'opzione per andare avanti.</p>
       </fieldset>
@@ -587,7 +651,7 @@
           <label class="scelta"><input type="radio" name="dolori" value="Sì" data-altro="dolori-dettaglio"><span class="segno"></span>Sì</label>
         </div>
         <div class="altro-wrap" id="dolori-dettaglio">
-          <input type="text" name="dolori_altro" placeholder="Dove e quando lo senti">
+          <input type="text" name="dolori_altro" placeholder="Quando e dove">
         </div>
         <p class="errore">Scegli un'opzione per andare avanti.</p>
       </fieldset>
@@ -598,7 +662,7 @@
     <div class="passo nascosto" data-passo="3">
 
       <div class="domanda">
-        <label class="etichetta" for="funzionato">Cosa ha funzionato meglio? <span class="facoltativa">— facoltativa</span></label>
+        <label class="etichetta" for="funzionato">Cosa ha funzionato? <span class="facoltativa">— facoltativa</span></label>
         <textarea id="funzionato" name="funzionato" rows="3" placeholder="Un'abitudine, un esercizio, un orario"></textarea>
       </div>
 
@@ -610,16 +674,16 @@
 
       <div class="domanda" data-req="obiettivo_mese" data-valida="testo">
         <label class="etichetta" for="obiettivo_mese">Su cosa vuoi concentrarti il mese prossimo?</label>
-        <input type="text" id="obiettivo_mese" name="obiettivo_mese" placeholder="Una cosa sola, quella che conta">
+        <input type="text" id="obiettivo_mese" name="obiettivo_mese" placeholder="Scrivi pure">
         <p class="errore">Scrivi almeno un obiettivo.</p>
       </div>
 
       <fieldset class="domanda" data-req="call">
-        <legend>Ti serve che ci sentiamo?</legend>
+        <legend>Quando vuoi che ci sentiamo?</legend>
         <div class="scelte">
-          <label class="scelta"><input type="radio" name="call" value="Sì, il prima possibile"><span class="segno"></span>Sì, il prima possibile</label>
-          <label class="scelta"><input type="radio" name="call" value="Sì, quando hai tempo"><span class="segno"></span>Sì, quando hai tempo</label>
-          <label class="scelta"><input type="radio" name="call" value="No, va tutto bene così"><span class="segno"></span>No, va tutto bene così</label>
+          <label class="scelta"><input type="radio" name="call" value="Il prima possibile"><span class="segno"></span>Il prima possibile</label>
+          <label class="scelta"><input type="radio" name="call" value="Con calma"><span class="segno"></span>Con calma</label>
+          <label class="scelta"><input type="radio" name="call" value="Ti aggiorno io"><span class="segno"></span>Ti aggiorno io</label>
         </div>
         <p class="errore">Scegli un'opzione per andare avanti.</p>
       </fieldset>
@@ -629,7 +693,7 @@
           <input type="checkbox" name="privacy" value="Sì"><span class="segno"></span>
           <span>Ho letto l'<a href="privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento di questi dati — compresi peso, misure e informazioni sulla salute — per seguire il mio percorso e aggiornare il programma.</span>
         </label>
-        <p class="errore">Senza il tuo consenso non posso conservare il check-in.</p>
+        <p class="errore">Senza il tuo consenso non posso conservare il check.</p>
         <p class="nota-privacy">
           Puoi revocare il consenso e chiedere la cancellazione dei tuoi dati in qualsiasi momento:
           trovi come fare nell'<a href="privacy.html" target="_blank" rel="noopener">informativa</a>.
@@ -676,7 +740,7 @@
 
     <div id="fine-mensile" class="nascosto">
       <h2>Ricevuto.<br>Ci vediamo sui numeri.</h2>
-      <p>Guardo il tuo check-in e aggiorno il programma dove serve.</p>
+      <p>Guardo il tuo check e aggiorno il programma dove serve.</p>
       <p>Se hai chiesto di sentirci, ti scrivo io.</p>
     </div>
 
@@ -691,7 +755,7 @@
    Indirizzo a cui vengono consegnate le risposte (Apps Script).
    Da cambiare solo se in futuro viene creato un nuovo deployment.
    ================================================================= */
-const ENDPOINT = ''; // vuoto in anteprima: l'indirizzo vero sta solo nella versione pubblicata
+const ENDPOINT = ''; // vuoto in anteprima
 
 /* Versione dell'informativa accettata: va allineata a quella scritta
    in privacy.html. Se l'informativa cambia, alza il numero: nel foglio
@@ -733,7 +797,8 @@ function creaWizard(idForm, titoli, tipo) {
     tacche.forEach((t, k) => t.classList.toggle('on', k <= n));
     titolo.textContent = titoli[n];
     conta.textContent = 'Passo ' + (n + 1) + ' di ' + passi.length;
-    btnIndietro.classList.toggle('nascosto', n === 0);
+    btnIndietro.classList.remove('nascosto');
+    btnIndietro.textContent = n === 0 ? 'Cambia scelta' : 'Indietro';
     btnAvanti.textContent = n === passi.length - 1 ? 'Invia' : 'Continua';
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
@@ -752,7 +817,10 @@ function creaWizard(idForm, titoli, tipo) {
     e.target.closest('.domanda')?.classList.remove('ko');
   });
 
-  btnIndietro.addEventListener('click', () => mostra(passo - 1));
+  btnIndietro.addEventListener('click', () => {
+    if (passo === 0) { pannello('porta'); return; }   /* dal primo passo si torna alla scelta */
+    mostra(passo - 1);
+  });
 
   btnAvanti.addEventListener('click', () => {
     if (!valida(passi[passo], form)) return;
@@ -913,7 +981,7 @@ function chiudi(tipo) {
   pannello('fine');
 }
 
-/* ---- mesi selezionabili nel check-in: quello in corso e i due precedenti ---- */
+/* ---- mesi selezionabili nel check: quello in corso e i due precedenti ---- */
 function riempiPeriodo() {
   const sel = document.getElementById('periodo');
   const mesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno',
@@ -944,7 +1012,7 @@ document.querySelectorAll('.porta-btn').forEach((b) => {
 });
 
 /* Link diretto, per saltare la schermata di scelta:
-     ...?tipo=mensile   il check-in da mandare ogni mese ai clienti
+     ...?tipo=mensile   il check da mandare ogni mese ai clienti
      ...?tipo=nuovo     il questionario da mettere in bio su Instagram
    Si può combinare con ?src=  →  ...?tipo=nuovo&src=instagram          */
 const tipoRichiesto = new URLSearchParams(location.search).get('tipo');
