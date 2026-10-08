@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>LDA — quattro cose da fare</title>
+<title>LDA — tre cose da fare</title>
 <meta name="description" content="Istruzioni passo per passo per collegare il questionario al foglio e attivare il cruscotto.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,74 +96,29 @@
     <span class="cp">Performance Coach</span>
   </div>
 
-  <h1>Quattro cose<em>e abbiamo finito</em></h1>
-  <p class="guida">Ciao Luigi. Il questionario è pronto, mancano solo quattro passaggi che possiamo fare solo noi dal tuo account Google. Sono tutti copia e incolla: non devi scrivere niente e non devi capire il codice.</p>
-  <p class="guida"><b>Ci vogliono una quindicina di minuti</b>, meglio dal computer che dal telefono. Se qualcosa non torna, fermati e scrivi a Simone: non si rompe nulla.</p>
-
-  <div class="avviso">
-    <b>Importante: il passo 1 va fatto da solo</b>
-    Fai <b>solo il passo 1</b> e fermati. Con quello che ci mandi prepariamo il file
-    che ti serve per il passo 2, e te lo giriamo. Se fai tutto di fila, il passo 2
-    non funziona: mancherebbe proprio l'informazione che ci stai mandando ora.
-  </div>
+  <h1>Tre cose<em>e abbiamo finito</em></h1>
+  <p class="guida">Ciao Luigi. Il questionario è pronto, mancano solo tre passaggi che puoi fare solo tu, perché serve il tuo account Google. Sono tutti copia e incolla: non devi scrivere niente e non devi capire il codice.</p>
+  <p class="guida"><b>Ci vogliono una decina di minuti</b>, meglio dal computer che dal telefono. Se qualcosa non torna, fermati e scrivi a Simone: non si rompe nulla.</p>
 
   <div class="avviso">
     <b>Prima di iniziare</b>
-    Per i passi 2 e 4 ti serviranno due file che ti manderà Simone dopo il passo 1:
-    <span class="file">Codice-AppsScript.gs</span>
-    <span class="file">Cruscotto-AppsScript.gs</span>
-    Per aprirli fai clic destro sul file, poi <span class="tasto">Apri con</span> e <span class="tasto">Blocco note</span>.
+    Ti serve un file solo, che ti ha mandato Simone:
+    <span class="file">Codice-AppsScript.txt</span>
+    Fai doppio clic e si apre col Blocco note.
   </div>
 
-  <!-- ====================== PASSO 1 ====================== -->
-  <section class="passo">
-    <span class="numero-passo">1</span>
-    <h2>Mandaci l'indirizzo del foglio dei check</h2>
-    <p class="perche">Serve a dire al questionario dove scrivere i check mensili. Oggi non lo sa, ed è il motivo per cui quella parte non funziona ancora.</p>
-
-    <ol class="gesti">
-      <li>Apri il <b>secondo foglio</b>, quello con la linguetta <b>CHECK MENSILE</b>.</li>
-      <li>Guarda in alto, nella barra dell'indirizzo del browser.</li>
-      <li>Fai clic sopra quella riga: diventa tutta blu, cioè selezionata.</li>
-      <li>Premi <span class="tasto">Ctrl</span> + <span class="tasto">C</span> per copiare.</li>
-      <li>Incolla in un messaggio a Simone con <span class="tasto">Ctrl</span> + <span class="tasto">V</span> e invia.</li>
-    </ol>
-
-    <figure>
-      <svg viewBox="0 0 600 160" role="img" aria-label="La barra dell'indirizzo del browser, da copiare tutta">
-        <rect x="10" y="10" width="580" height="106" rx="8" fill="#fff" stroke="#DDD8D4" stroke-width="2"/>
-        <rect x="10" y="10" width="580" height="30" rx="8" fill="#F0EDEA"/>
-        <rect x="10" y="32" width="580" height="8" fill="#F0EDEA"/>
-        <circle cx="30" cy="25" r="5" fill="#DDD8D4"/>
-        <circle cx="48" cy="25" r="5" fill="#DDD8D4"/>
-        <circle cx="66" cy="25" r="5" fill="#DDD8D4"/>
-        <rect x="26" y="54" width="548" height="34" rx="17" fill="#EAF2FD" stroke="#D63000" stroke-width="2.5"/>
-        <text x="46" y="76" font-family="monospace" font-size="13" fill="#1C1C1C">https://docs.google.com/spreadsheets/d/1aB2cD3e...</text>
-        <path d="M300 116 L300 132" stroke="#D63000" stroke-width="2"/>
-        <path d="M300 116 l-5 7 M300 116 l5 7" stroke="#D63000" stroke-width="2" fill="none"/>
-        <text x="300" y="150" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#D63000" text-anchor="middle">copia tutta questa riga, dall'inizio alla fine</text>
-      </svg>
-      <figcaption>Disegno indicativo, non una foto del tuo schermo. La riga vera sarà più lunga: va bene, copiala tutta.</figcaption>
-    </figure>
-
-    <div class="ok">
-      <b>Come sai che è fatto</b>
-      Nel messaggio a Simone vedi una riga lunga che inizia con <b>https://docs.google.com</b>. Non serve che tu capisca cosa c'è scritto dentro.
-    </div>
-  </section>
 
   <!-- ====================== PASSO 2 ====================== -->
   <section class="passo">
-    <span class="numero-passo">2</span>
-    <h2>Sostituisci il codice nel primo foglio</h2>
-    <div class="avviso" style="margin-top:.8rem"><b>Da fare dopo</b>Aspetta che Simone ti mandi il file: quello che hai ricevuto prima del passo 1 non è ancora completo.</div>
+    <span class="numero-passo">1</span>
+    <h2>Sostituisci il codice nel foglio</h2>
     <p class="perche">È il pezzo che riceve le risposte. Quello che c'è adesso è vecchio e non conosce il check mensile: va sostituito con quello nuovo.</p>
 
     <ol class="gesti">
-      <li>Apri il <b>primo foglio</b>, quello con la linguetta <b>CONSULENZE</b>.</li>
+      <li>Apri il tuo foglio delle consulenze, quello che usi già.</li>
       <li>Nel menù in alto clicca <span class="tasto">Estensioni</span>, poi <span class="tasto">Apps Script</span>. Si apre una pagina nuova con tanto testo colorato: è normale.</li>
       <li>Clicca una volta dentro quel testo, poi premi <span class="tasto">Ctrl</span> + <span class="tasto">A</span> (seleziona tutto) e <span class="tasto">Canc</span>. Resta una pagina bianca: va bene così.</li>
-      <li>Apri il file <b>Codice-AppsScript.gs</b> col Blocco note, premi <span class="tasto">Ctrl</span> + <span class="tasto">A</span> e <span class="tasto">Ctrl</span> + <span class="tasto">C</span>.</li>
+      <li>Apri il file <b>Codice-AppsScript.txt</b> col doppio clic, premi <span class="tasto">Ctrl</span> + <span class="tasto">A</span> e <span class="tasto">Ctrl</span> + <span class="tasto">C</span>.</li>
       <li>Torna alla pagina bianca e premi <span class="tasto">Ctrl</span> + <span class="tasto">V</span>.</li>
       <li>Premi <span class="tasto">Ctrl</span> + <span class="tasto">S</span> per salvare.</li>
     </ol>
@@ -197,7 +152,7 @@
 
   <!-- ====================== PASSO 3 ====================== -->
   <section class="passo">
-    <span class="numero-passo">3</span>
+    <span class="numero-passo">2</span>
     <h2>Pubblica la versione nuova</h2>
     <p class="perche">Salvare non basta. Finché non pubblichi, il questionario continua a usare la versione vecchia come se non avessi cambiato niente. È il passaggio che si dimentica più spesso.</p>
 
@@ -242,17 +197,14 @@
 
   <!-- ====================== PASSO 4 ====================== -->
   <section class="passo">
-    <span class="numero-passo">4</span>
-    <h2>Attiva il cruscotto nel secondo foglio</h2>
-    <p class="perche">È la scheda che ti fa vedere i grafici di un cliente scegliendolo da un elenco, invece di leggere righe di tabella.</p>
+    <span class="numero-passo">3</span>
+    <h2>Accendi il cruscotto</h2>
+    <p class="perche">È la scheda che ti fa vedere i grafici di un cliente scegliendolo da un elenco, invece di leggere righe di tabella. Il codice c'è già: l'hai incollato al passo 1, va solo avviato la prima volta.</p>
 
     <ol class="gesti">
-      <li>Apri il <b>secondo foglio</b>, quello dei check.</li>
-      <li><span class="tasto">Estensioni</span>, poi <span class="tasto">Apps Script</span>, come hai fatto prima.</li>
-      <li>Cancella tutto con <span class="tasto">Ctrl</span> + <span class="tasto">A</span> e <span class="tasto">Canc</span>.</li>
-      <li>Incolla il contenuto di <b>Cruscotto-AppsScript.gs</b> e salva con <span class="tasto">Ctrl</span> + <span class="tasto">S</span>.</li>
-      <li>Torna al foglio e ricaricalo con <span class="tasto">F5</span>.</li>
-      <li>Nel menù in alto adesso c'è una voce nuova: <b>LDA</b>. Cliccala e scegli <b>Crea o aggiorna il cruscotto</b>.</li>
+      <li>Torna al foglio e ricaricalo premendo <span class="tasto">F5</span>.</li>
+      <li>Nel menù in alto adesso c'è una voce nuova: <b>LDA</b>. Cliccala.</li>
+      <li>Scegli <b>Crea o aggiorna il cruscotto</b>.</li>
     </ol>
 
     <div class="avviso">
@@ -288,18 +240,18 @@
     <div class="ok">
       <b>Come sai che è fatto</b>
       Nel foglio compare una scheda nuova chiamata <b>Cruscotto</b>, con un menù a tendina per scegliere il cliente.
-      Se dentro è ancora vuota è normale: si riempie quando arrivano i primi check.
+      Se dentro è ancora vuota è normale: si riempie quando arrivano i primi check mensili.
+      Compare anche una seconda scheda, <b>CHECK MENSILE</b>: è dove finiranno quei check.
     </div>
   </section>
 
   <!-- ====================== CHIUSURA ====================== -->
   <section class="chiusura">
     <h2>Quando hai finito</h2>
-    <p>Scrivi a Simone queste tre cose, anche in un messaggio solo:</p>
+    <p>Scrivi a Simone due righe:</p>
     <ol class="gesti">
-      <li>l'indirizzo del secondo foglio (il passo 1);</li>
-      <li>se il passo 3 è andato a buon fine, cioè se hai visto <b>Fine</b> senza messaggi rossi;</li>
-      <li>se nel secondo foglio è comparsa la scheda <b>Cruscotto</b>.</li>
+      <li>se al passo 2 hai visto <b>Fine</b> senza messaggi rossi;</li>
+      <li>se nel foglio sono comparse le schede <b>Cruscotto</b> e <b>CHECK MENSILE</b>.</li>
     </ol>
 
     <p>Da lì controlliamo noi che tutto risponda, e poi mettiamo online il questionario nuovo.</p>
