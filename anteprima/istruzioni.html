@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LDA — quattro cose da fare</title>
+<meta name="description" content="Istruzioni passo per passo per collegare il questionario al foglio e attivare il cruscotto.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --inchiostro:#1C1C1C;
+    --tenue:#6A6A6A;
+    --accento:#D63000;
+    --carta:#FFFFFF;
+    --fondo:#F4F2F0;
+    --bordo:#DDD8D4;
+    --giallo:#FFF6E0;
+    --bordo-giallo:#E8C97A;
+    --verde:#EAF6EC;
+    --bordo-verde:#A8D5B2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--fondo);color:var(--inchiostro);
+    font-family:'Montserrat',system-ui,sans-serif;
+    font-size:17px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .foglio{max-width:40rem;margin:0 auto;background:var(--carta);
+    padding:2rem 1.3rem 4rem;min-height:100vh;
+    box-shadow:0 0 40px rgba(0,0,0,.06)}
+
+  h1,h2,.bebas{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;letter-spacing:.02em;line-height:1.06}
+
+  .marchio{display:flex;align-items:baseline;gap:.45rem;margin-bottom:2rem}
+  .marchio .lda{font-family:'Bebas Neue',Impact,sans-serif;font-size:2.2rem;line-height:1}
+  .marchio .lda i{font-style:normal;color:var(--accento)}
+  .marchio .cp{font-size:.58rem;letter-spacing:.2em;font-weight:700;color:var(--tenue);text-transform:uppercase;padding-bottom:.25rem}
+
+  h1{font-size:clamp(2.2rem,9vw,3rem);margin-bottom:.9rem}
+  h1 em{font-style:normal;color:var(--accento);display:block}
+  .guida{color:var(--tenue);margin-bottom:1rem}
+
+  .passo{margin-top:3rem;padding-top:1.6rem;border-top:2px solid var(--bordo)}
+  .passo:first-of-type{border-top:none}
+  .numero-passo{
+    display:inline-block;background:var(--accento);color:#fff;
+    font-family:'Bebas Neue',Impact,sans-serif;font-size:1.3rem;
+    width:2.1rem;height:2.1rem;line-height:2.15rem;text-align:center;
+    margin-bottom:.7rem;
+  }
+  .passo h2{font-size:1.75rem;margin-bottom:.4rem}
+  .perche{color:var(--tenue);font-size:.95rem;margin-bottom:1.3rem}
+
+  ol.gesti{list-style:none;counter-reset:g;margin:1.2rem 0}
+  ol.gesti li{counter-increment:g;position:relative;padding-left:2.3rem;margin-bottom:.9rem}
+  ol.gesti li::before{
+    content:counter(g);position:absolute;left:0;top:.1rem;
+    width:1.6rem;height:1.6rem;line-height:1.65rem;text-align:center;
+    border:2px solid var(--accento);color:var(--accento);
+    font-weight:700;font-size:.82rem;border-radius:50%;
+  }
+  b{font-weight:700}
+  .tasto{
+    display:inline-block;background:#F0EDEA;border:1px solid var(--bordo);
+    padding:.05em .45em;font-weight:600;font-size:.94em;white-space:nowrap;
+  }
+
+  figure{margin:1.4rem 0}
+  figure svg{display:block;width:100%;height:auto;border:1px solid var(--bordo);background:#FAF9F8}
+  figcaption{font-size:.8rem;color:var(--tenue);margin-top:.45rem;font-style:italic}
+
+  .avviso{background:var(--giallo);border:1px solid var(--bordo-giallo);padding:1rem 1.1rem;margin:1.4rem 0;font-size:.94rem}
+  .avviso > b:first-child{display:block;margin-bottom:.3rem}
+  .ok{background:var(--verde);border:1px solid var(--bordo-verde);padding:1rem 1.1rem;margin:1.4rem 0;font-size:.94rem}
+  .ok > b:first-child{display:block;margin-bottom:.3rem}
+  .file{display:block;font-weight:700;font-family:monospace;font-size:.95rem;margin:.45rem 0 .45rem .2rem;color:var(--accento)}
+
+  .chiusura{margin-top:3.5rem;padding-top:1.6rem;border-top:2px solid var(--bordo)}
+  .chiusura h2{font-size:1.6rem;margin-bottom:.8rem}
+  @media print{
+    body{background:#fff} .foglio{box-shadow:none;max-width:none}
+    .passo{break-inside:avoid} figure{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="foglio">
+
+  <div class="marchio">
+    <span class="lda">LD<i>A</i></span>
+    <span class="cp">Performance Coach</span>
+  </div>
+
+  <h1>Quattro cose<em>e abbiamo finito</em></h1>
+  <p class="guida">Ciao Luigi. Il questionario è pronto, mancano solo quattro passaggi che possiamo fare solo noi dal tuo account Google. Sono tutti copia e incolla: non devi scrivere niente e non devi capire il codice.</p>
+  <p class="guida"><b>Ci vogliono una quindicina di minuti</b>, meglio dal computer che dal telefono. Se qualcosa non torna, fermati e scrivi a Simone: non si rompe nulla.</p>
+
+  <div class="avviso">
+    <b>Importante: il passo 1 va fatto da solo</b>
+    Fai <b>solo il passo 1</b> e fermati. Con quello che ci mandi prepariamo il file
+    che ti serve per il passo 2, e te lo giriamo. Se fai tutto di fila, il passo 2
+    non funziona: mancherebbe proprio l'informazione che ci stai mandando ora.
+  </div>
+
+  <div class="avviso">
+    <b>Prima di iniziare</b>
+    Per i passi 2 e 4 ti serviranno due file che ti manderà Simone dopo il passo 1:
+    <span class="file">Codice-AppsScript.gs</span>
+    <span class="file">Cruscotto-AppsScript.gs</span>
+    Per aprirli fai clic destro sul file, poi <span class="tasto">Apri con</span> e <span class="tasto">Blocco note</span>.
+  </div>
+
+  <!-- ====================== PASSO 1 ====================== -->
+  <section class="passo">
+    <span class="numero-passo">1</span>
+    <h2>Mandaci l'indirizzo del foglio dei check</h2>
+    <p class="perche">Serve a dire al questionario dove scrivere i check mensili. Oggi non lo sa, ed è il motivo per cui quella parte non funziona ancora.</p>
+
+    <ol class="gesti">
+      <li>Apri il <b>secondo foglio</b>, quello con la linguetta <b>CHECK MENSILE</b>.</li>
+      <li>Guarda in alto, nella barra dell'indirizzo del browser.</li>
+      <li>Fai clic sopra quella riga: diventa tutta blu, cioè selezionata.</li>
+      <li>Premi <span class="tasto">Ctrl</span> + <span class="tasto">C</span> per copiare.</li>
+      <li>Incolla in un messaggio a Simone con <span class="tasto">Ctrl</span> + <span class="tasto">V</span> e invia.</li>
+    </ol>
+
+    <figure>
+      <svg viewBox="0 0 600 160" role="img" aria-label="La barra dell'indirizzo del browser, da copiare tutta">
+        <rect x="10" y="10" width="580" height="106" rx="8" fill="#fff" stroke="#DDD8D4" stroke-width="2"/>
+        <rect x="10" y="10" width="580" height="30" rx="8" fill="#F0EDEA"/>
+        <rect x="10" y="32" width="580" height="8" fill="#F0EDEA"/>
+        <circle cx="30" cy="25" r="5" fill="#DDD8D4"/>
+        <circle cx="48" cy="25" r="5" fill="#DDD8D4"/>
+        <circle cx="66" cy="25" r="5" fill="#DDD8D4"/>
+        <rect x="26" y="54" width="548" height="34" rx="17" fill="#EAF2FD" stroke="#D63000" stroke-width="2.5"/>
+        <text x="46" y="76" font-family="monospace" font-size="13" fill="#1C1C1C">https://docs.google.com/spreadsheets/d/1aB2cD3e...</text>
+        <path d="M300 116 L300 132" stroke="#D63000" stroke-width="2"/>
+        <path d="M300 116 l-5 7 M300 116 l5 7" stroke="#D63000" stroke-width="2" fill="none"/>
+        <text x="300" y="150" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#D63000" text-anchor="middle">copia tutta questa riga, dall'inizio alla fine</text>
+      </svg>
+      <figcaption>Disegno indicativo, non una foto del tuo schermo. La riga vera sarà più lunga: va bene, copiala tutta.</figcaption>
+    </figure>
+
+    <div class="ok">
+      <b>Come sai che è fatto</b>
+      Nel messaggio a Simone vedi una riga lunga che inizia con <b>https://docs.google.com</b>. Non serve che tu capisca cosa c'è scritto dentro.
+    </div>
+  </section>
+
+  <!-- ====================== PASSO 2 ====================== -->
+  <section class="passo">
+    <span class="numero-passo">2</span>
+    <h2>Sostituisci il codice nel primo foglio</h2>
+    <div class="avviso" style="margin-top:.8rem"><b>Da fare dopo</b>Aspetta che Simone ti mandi il file: quello che hai ricevuto prima del passo 1 non è ancora completo.</div>
+    <p class="perche">È il pezzo che riceve le risposte. Quello che c'è adesso è vecchio e non conosce il check mensile: va sostituito con quello nuovo.</p>
+
+    <ol class="gesti">
+      <li>Apri il <b>primo foglio</b>, quello con la linguetta <b>CONSULENZE</b>.</li>
+      <li>Nel menù in alto clicca <span class="tasto">Estensioni</span>, poi <span class="tasto">Apps Script</span>. Si apre una pagina nuova con tanto testo colorato: è normale.</li>
+      <li>Clicca una volta dentro quel testo, poi premi <span class="tasto">Ctrl</span> + <span class="tasto">A</span> (seleziona tutto) e <span class="tasto">Canc</span>. Resta una pagina bianca: va bene così.</li>
+      <li>Apri il file <b>Codice-AppsScript.gs</b> col Blocco note, premi <span class="tasto">Ctrl</span> + <span class="tasto">A</span> e <span class="tasto">Ctrl</span> + <span class="tasto">C</span>.</li>
+      <li>Torna alla pagina bianca e premi <span class="tasto">Ctrl</span> + <span class="tasto">V</span>.</li>
+      <li>Premi <span class="tasto">Ctrl</span> + <span class="tasto">S</span> per salvare.</li>
+    </ol>
+
+    <figure>
+      <svg viewBox="0 0 600 190" role="img" aria-label="Il menù Estensioni del foglio, con la voce Apps Script">
+        <rect x="10" y="10" width="580" height="170" rx="8" fill="#fff" stroke="#DDD8D4" stroke-width="2"/>
+        <rect x="10" y="10" width="580" height="34" rx="8" fill="#F0EDEA"/>
+        <rect x="10" y="36" width="580" height="8" fill="#F0EDEA"/>
+        <text x="28" y="32" font-family="Montserrat, sans-serif" font-size="13" fill="#6A6A6A">File &#160;&#160; Modifica &#160;&#160; Visualizza &#160;&#160; Inserisci &#160;&#160; Formato &#160;&#160; Dati &#160;&#160; Strumenti</text>
+        <rect x="26" y="54" width="104" height="26" rx="4" fill="#FDECE6" stroke="#D63000" stroke-width="2"/>
+        <text x="78" y="72" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#D63000" text-anchor="middle">Estensioni</text>
+        <rect x="26" y="86" width="210" height="84" rx="5" fill="#fff" stroke="#DDD8D4" stroke-width="2"/>
+        <rect x="28" y="92" width="206" height="28" fill="#FDECE6"/>
+        <text x="44" y="111" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#D63000">Apps Script</text>
+        <text x="44" y="139" font-family="Montserrat, sans-serif" font-size="13" fill="#9A9A9A">Componenti aggiuntivi</text>
+        <text x="44" y="161" font-family="Montserrat, sans-serif" font-size="13" fill="#9A9A9A">Macro</text>
+        <path d="M250 104 L300 104" stroke="#D63000" stroke-width="2"/>
+        <path d="M250 104 l7 -5 M250 104 l7 5" stroke="#D63000" stroke-width="2" fill="none"/>
+        <text x="310" y="100" font-family="Montserrat, sans-serif" font-size="14" font-weight="700" fill="#D63000">clicca qui</text>
+        <text x="310" y="120" font-family="Montserrat, sans-serif" font-size="12" fill="#6A6A6A">si apre una pagina nuova</text>
+      </svg>
+      <figcaption>Disegno indicativo. Nel tuo foglio il menù avrà anche altre voci: cerca <b>Estensioni</b>.</figcaption>
+    </figure>
+
+    <div class="avviso">
+      <b>Se ti spaventa il testo colorato</b>
+      È il linguaggio con cui è scritto il programma. Non devi leggerlo né capirlo: lo stai solo sostituendo, come si sostituisce un foglio dentro una cartellina.
+    </div>
+  </section>
+
+  <!-- ====================== PASSO 3 ====================== -->
+  <section class="passo">
+    <span class="numero-passo">3</span>
+    <h2>Pubblica la versione nuova</h2>
+    <p class="perche">Salvare non basta. Finché non pubblichi, il questionario continua a usare la versione vecchia come se non avessi cambiato niente. È il passaggio che si dimentica più spesso.</p>
+
+    <ol class="gesti">
+      <li>Nella stessa pagina del codice, in alto a destra, clicca il pulsante azzurro <span class="tasto">Distribuisci</span>.</li>
+      <li>Dal menù che scende scegli <span class="tasto">Gestisci deployment</span>.</li>
+      <li>Si apre un riquadro. In alto a destra c'è una <b>matita</b>: cliccala.</li>
+      <li>Dove c'è scritto <b>Versione</b>, apri la tendina e scegli <span class="tasto">Nuova versione</span>.</li>
+      <li>Clicca <span class="tasto">Distribuisci</span> in basso, poi <span class="tasto">Fine</span>.</li>
+    </ol>
+
+    <figure>
+      <svg viewBox="0 0 600 220" role="img" aria-label="Il pulsante Distribuisci e il riquadro con la matita">
+        <rect x="10" y="10" width="580" height="200" rx="8" fill="#fff" stroke="#DDD8D4" stroke-width="2"/>
+        <rect x="420" y="26" width="150" height="32" rx="16" fill="#1A73E8"/>
+        <text x="495" y="47" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">Distribuisci</text>
+        <rect x="396" y="64" width="174" height="62" rx="5" fill="#fff" stroke="#DDD8D4" stroke-width="2"/>
+        <text x="412" y="86" font-family="Montserrat, sans-serif" font-size="12" fill="#9A9A9A">Nuovo deployment</text>
+        <rect x="398" y="94" width="170" height="26" fill="#FDECE6"/>
+        <text x="412" y="112" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#D63000">Gestisci deployment</text>
+
+        <rect x="30" y="100" width="330" height="96" rx="6" fill="#FAF9F8" stroke="#DDD8D4" stroke-width="2"/>
+        <text x="48" y="126" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#1C1C1C">Gestisci deployment</text>
+        <circle cx="330" cy="120" r="14" fill="#FDECE6" stroke="#D63000" stroke-width="2"/>
+        <path d="M324 126 l9 -9 l3 3 l-9 9 z" fill="#D63000"/>
+        <text x="48" y="152" font-family="Montserrat, sans-serif" font-size="12" fill="#6A6A6A">Versione</text>
+        <rect x="48" y="160" width="190" height="24" rx="4" fill="#fff" stroke="#D63000" stroke-width="2"/>
+        <text x="60" y="177" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#D63000">Nuova versione</text>
+        <path d="M330 140 L330 160" stroke="#D63000" stroke-width="2"/>
+        <path d="M330 160 l-5 -7 M330 160 l5 -7" stroke="#D63000" stroke-width="2" fill="none"/>
+        <text x="348" y="156" font-family="Montserrat, sans-serif" font-size="12" font-weight="700" fill="#D63000">la matita</text>
+      </svg>
+      <figcaption>Disegno indicativo dei due passaggi: prima il pulsante in alto a destra, poi la matita dentro il riquadro.</figcaption>
+    </figure>
+
+    <div class="avviso">
+      <b>Attenzione a questo</b>
+      Nella tendina <b>Versione</b> deve esserci scritto <b>Nuova versione</b>, non un numero.
+      Se lasci il numero, pubblichi di nuovo quella vecchia e non cambia niente.
+    </div>
+  </section>
+
+  <!-- ====================== PASSO 4 ====================== -->
+  <section class="passo">
+    <span class="numero-passo">4</span>
+    <h2>Attiva il cruscotto nel secondo foglio</h2>
+    <p class="perche">È la scheda che ti fa vedere i grafici di un cliente scegliendolo da un elenco, invece di leggere righe di tabella.</p>
+
+    <ol class="gesti">
+      <li>Apri il <b>secondo foglio</b>, quello dei check.</li>
+      <li><span class="tasto">Estensioni</span>, poi <span class="tasto">Apps Script</span>, come hai fatto prima.</li>
+      <li>Cancella tutto con <span class="tasto">Ctrl</span> + <span class="tasto">A</span> e <span class="tasto">Canc</span>.</li>
+      <li>Incolla il contenuto di <b>Cruscotto-AppsScript.gs</b> e salva con <span class="tasto">Ctrl</span> + <span class="tasto">S</span>.</li>
+      <li>Torna al foglio e ricaricalo con <span class="tasto">F5</span>.</li>
+      <li>Nel menù in alto adesso c'è una voce nuova: <b>LDA</b>. Cliccala e scegli <b>Crea o aggiorna il cruscotto</b>.</li>
+    </ol>
+
+    <div class="avviso">
+      <b>Qui Google ti fa una scenata. Non preoccuparti.</b>
+      La prima volta compare un avviso che dice che l'app non è verificata, con uno sfondo grigio e un tono allarmato.
+      Succede a qualunque programma scritto su misura che non sia passato dal controllo di Google: il tuo caso è questo,
+      l'ha scritto Simone per te e tocca solo i tuoi fogli. Per andare avanti:
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 600 230" role="img" aria-label="La schermata di avviso di Google, con il link Avanzate in basso a sinistra">
+        <rect x="10" y="10" width="580" height="210" rx="8" fill="#fff" stroke="#DDD8D4" stroke-width="2"/>
+        <circle cx="60" cy="54" r="16" fill="#FFF6E0" stroke="#E8C97A" stroke-width="2"/>
+        <text x="60" y="61" font-family="Montserrat, sans-serif" font-size="19" font-weight="700" fill="#C79A1E" text-anchor="middle">!</text>
+        <text x="92" y="50" font-family="Montserrat, sans-serif" font-size="15" font-weight="700" fill="#1C1C1C">Google non ha verificato questa app</text>
+        <text x="92" y="74" font-family="Montserrat, sans-serif" font-size="12" fill="#6A6A6A">L'app richiede l'accesso a dati sensibili del tuo account Google.</text>
+        <text x="92" y="92" font-family="Montserrat, sans-serif" font-size="12" fill="#6A6A6A">Finché non viene verificata, evita di usarla.</text>
+
+        <rect x="38" y="118" width="96" height="28" rx="4" fill="#fff" stroke="#D63000" stroke-width="2.5"/>
+        <text x="86" y="137" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#D63000" text-anchor="middle">Avanzate</text>
+        <rect x="440" y="118" width="130" height="28" rx="4" fill="#E8E8E8"/>
+        <text x="505" y="137" font-family="Montserrat, sans-serif" font-size="13" fill="#9A9A9A" text-anchor="middle">Torna indietro</text>
+
+        <path d="M86 150 L86 172" stroke="#D63000" stroke-width="2"/>
+        <path d="M86 172 l-5 -7 M86 172 l5 -7" stroke="#D63000" stroke-width="2" fill="none"/>
+        <text x="38" y="192" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#D63000">1. clicca Avanzate</text>
+        <text x="38" y="211" font-family="Montserrat, sans-serif" font-size="13" font-weight="700" fill="#D63000">2. poi &#171;Apri progetto (non sicuro)&#187;</text>
+        <text x="300" y="211" font-family="Montserrat, sans-serif" font-size="12" fill="#6A6A6A">3. infine Consenti</text>
+      </svg>
+      <figcaption>Disegno indicativo. Il testo esatto può cambiare un po': cerca la parola <b>Avanzate</b>, di solito in basso a sinistra.</figcaption>
+    </figure>
+
+    <div class="ok">
+      <b>Come sai che è fatto</b>
+      Nel foglio compare una scheda nuova chiamata <b>Cruscotto</b>, con un menù a tendina per scegliere il cliente.
+      Se dentro è ancora vuota è normale: si riempie quando arrivano i primi check.
+    </div>
+  </section>
+
+  <!-- ====================== CHIUSURA ====================== -->
+  <section class="chiusura">
+    <h2>Quando hai finito</h2>
+    <p>Scrivi a Simone queste tre cose, anche in un messaggio solo:</p>
+    <ol class="gesti">
+      <li>l'indirizzo del secondo foglio (il passo 1);</li>
+      <li>se il passo 3 è andato a buon fine, cioè se hai visto <b>Fine</b> senza messaggi rossi;</li>
+      <li>se nel secondo foglio è comparsa la scheda <b>Cruscotto</b>.</li>
+    </ol>
+
+    <p>Da lì controlliamo noi che tutto risponda, e poi mettiamo online il questionario nuovo.</p>
+
+    <div class="avviso">
+      <b>Se ti blocchi</b>
+      Fermati e manda una foto dello schermo a Simone. Non c'è niente che tu possa rompere:
+      il questionario che hai adesso online continua a funzionare esattamente come prima
+      finché non siamo noi a sostituirlo.
+    </div>
+
+    <p style="margin-top:2.2rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tenue);font-weight:700">
+      Rispetto · Costanza · Disciplina · Impegno · <span style="color:var(--accento)">Crescita continua</span>
+    </p>
+  </section>
+
+</div>
+</body>
+</html>
